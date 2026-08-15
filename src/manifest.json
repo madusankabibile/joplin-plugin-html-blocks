@@ -1,0 +1,26 @@
+{
+	"manifest_version": 1,
+	"id": "com.madusanka.htmlBlocks",
+	"app_min_version": "3.0.0",
+	"version": "1.0.0",
+	"name": "HTML Blocks",
+	"description": "Write styled HTML sections - cards, callouts, fancy lists, steps, timelines, grids and more - using a simple `!!! type` ... `!!!->` markdown fence.",
+	"author": "madusanka",
+	"homepage_url": "https://github.com/madusankabibile/joplin-plugin-html-blocks",
+	"repository_url": "https://github.com/madusankabibile/joplin-plugin-html-blocks",
+	"keywords": [
+		"card",
+		"callout",
+		"admonition",
+		"html",
+		"list"
+	],
+	"categories": [
+		"editor",
+		"viewer",
+		"appearance"
+	],
+	"screenshots": [],
+	"icons": {},
+	"promo_tile": {}
+}

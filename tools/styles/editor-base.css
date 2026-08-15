@@ -1,0 +1,58 @@
+/* ==========================================================================
+   HTML Blocks - markdown editor (CodeMirror 6) styles
+   ========================================================================== */
+
+.cm-jhtml-line {
+	--jh-color: #64748b;
+	--jh-bg: var(--joplin-background-color, #ffffff);
+	--jh-fg: var(--joplin-color, #24292e);
+	--jh-tint: transparent;
+	--jh-tint-2: transparent;
+	--jh-strong: var(--jh-color);
+	--jh-muted: var(--jh-fg);
+
+	background: var(--jh-tint);
+	box-shadow: inset 3px 0 0 var(--jh-color);
+}
+
+@supports (color: color-mix(in srgb, red 50%, blue)) {
+	.cm-jhtml-line {
+		--jh-tint: color-mix(in srgb, var(--jh-color) 8%, var(--jh-bg));
+		--jh-tint-2: color-mix(in srgb, var(--jh-color) 18%, var(--jh-bg));
+		--jh-strong: color-mix(in srgb, var(--jh-color) 70%, var(--jh-fg));
+		--jh-muted: color-mix(in srgb, var(--jh-fg) 60%, var(--jh-bg));
+	}
+}
+
+.cm-jhtml-fence {
+	background: var(--jh-tint-2);
+}
+
+.cm-jhtml-depth-2 { padding-left: 10px; }
+.cm-jhtml-depth-3 { padding-left: 20px; }
+.cm-jhtml-depth-4 { padding-left: 30px; }
+
+/* The `!!!` / `!!!->` markers. */
+.cm-jhtml-marker {
+	color: var(--jh-color);
+	font-weight: 700;
+	opacity: 0.85;
+}
+
+/* The block type right after the opening marker. */
+.cm-jhtml-type {
+	color: var(--jh-strong);
+	font-weight: 700;
+}
+
+.cm-jhtml-type-unknown {
+	color: #e11d48;
+	text-decoration: underline wavy #e11d48;
+	text-underline-offset: 3px;
+}
+
+/* The title on the opening line. */
+.cm-jhtml-title {
+	color: var(--jh-strong);
+	font-style: italic;
+}

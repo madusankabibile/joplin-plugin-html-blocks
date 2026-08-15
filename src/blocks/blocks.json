@@ -1,0 +1,488 @@
+{
+	"$comment": "Single source of truth for every block type. Consumed by the markdown-it renderer, the CodeMirror editor highlighter, the menus/commands and by tools/generate-styles.js. Add a new entry here and it shows up everywhere - then run `npm run styles`.",
+	"blocks": [
+		{
+			"id": "card_light_blue",
+			"label": "Light blue card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#38bdf8",
+			"aliases": ["card_lightblue", "card_sky"],
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_blue",
+			"label": "Blue card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#3b82f6",
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_indigo",
+			"label": "Indigo card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#6366f1",
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_teal",
+			"label": "Teal card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#14b8a6",
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_green",
+			"label": "Green card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#22c55e",
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_light_green",
+			"label": "Light green card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#84cc16",
+			"aliases": ["card_lightgreen", "card_lime"],
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_yellow",
+			"label": "Yellow card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#eab308",
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_orange",
+			"label": "Orange card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#f97316",
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_red",
+			"label": "Red card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#ef4444",
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_pink",
+			"label": "Pink card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#ec4899",
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_purple",
+			"label": "Purple card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#a855f7",
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_gray",
+			"label": "Gray card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#6b7280",
+			"aliases": ["card_grey"],
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+		{
+			"id": "card_dark",
+			"label": "Dark card",
+			"category": "Cards",
+			"mode": "card",
+			"color": "#334155",
+			"titleHint": "Card title",
+			"bodyHint": "Card contents"
+		},
+
+		{
+			"id": "callout_info",
+			"label": "Info",
+			"category": "Callouts",
+			"mode": "callout",
+			"color": "#3b82f6",
+			"icon": "ℹ️",
+			"defaultTitle": "Info",
+			"aliases": ["info"],
+			"titleHint": "Info",
+			"bodyHint": "Something worth knowing."
+		},
+		{
+			"id": "callout_tip",
+			"label": "Tip",
+			"category": "Callouts",
+			"mode": "callout",
+			"color": "#10b981",
+			"icon": "💡",
+			"defaultTitle": "Tip",
+			"aliases": ["tip", "hint"],
+			"titleHint": "Tip",
+			"bodyHint": "A helpful tip."
+		},
+		{
+			"id": "callout_note",
+			"label": "Note",
+			"category": "Callouts",
+			"mode": "callout",
+			"color": "#64748b",
+			"icon": "📝",
+			"defaultTitle": "Note",
+			"aliases": ["note"],
+			"titleHint": "Note",
+			"bodyHint": "A side note."
+		},
+		{
+			"id": "callout_success",
+			"label": "Success",
+			"category": "Callouts",
+			"mode": "callout",
+			"color": "#22c55e",
+			"icon": "✅",
+			"defaultTitle": "Success",
+			"aliases": ["success", "done"],
+			"titleHint": "Success",
+			"bodyHint": "It worked."
+		},
+		{
+			"id": "callout_warning",
+			"label": "Warning",
+			"category": "Callouts",
+			"mode": "callout",
+			"color": "#f59e0b",
+			"icon": "⚠️",
+			"defaultTitle": "Warning",
+			"aliases": ["warning", "caution"],
+			"titleHint": "Warning",
+			"bodyHint": "Be careful here."
+		},
+		{
+			"id": "callout_danger",
+			"label": "Danger",
+			"category": "Callouts",
+			"mode": "callout",
+			"color": "#ef4444",
+			"icon": "⛔",
+			"defaultTitle": "Danger",
+			"aliases": ["danger", "error"],
+			"titleHint": "Danger",
+			"bodyHint": "This can break things."
+		},
+		{
+			"id": "callout_question",
+			"label": "Question",
+			"category": "Callouts",
+			"mode": "callout",
+			"color": "#8b5cf6",
+			"icon": "❓",
+			"defaultTitle": "Question",
+			"aliases": ["question", "faq"],
+			"titleHint": "Question",
+			"bodyHint": "Something to figure out."
+		},
+		{
+			"id": "callout_example",
+			"label": "Example",
+			"category": "Callouts",
+			"mode": "callout",
+			"color": "#06b6d4",
+			"icon": "🧪",
+			"defaultTitle": "Example",
+			"aliases": ["example"],
+			"titleHint": "Example",
+			"bodyHint": "For instance..."
+		},
+		{
+			"id": "callout_bug",
+			"label": "Bug",
+			"category": "Callouts",
+			"mode": "callout",
+			"color": "#f43f5e",
+			"icon": "🐛",
+			"defaultTitle": "Bug",
+			"aliases": ["bug"],
+			"titleHint": "Bug",
+			"bodyHint": "What goes wrong."
+		},
+		{
+			"id": "callout_todo",
+			"label": "To do",
+			"category": "Callouts",
+			"mode": "callout",
+			"color": "#f97316",
+			"icon": "📌",
+			"defaultTitle": "To do",
+			"aliases": ["todo"],
+			"titleHint": "To do",
+			"bodyHint": "What is left to do."
+		},
+
+		{
+			"id": "list_style1",
+			"label": "Style 1 - dot pills",
+			"category": "Lists",
+			"mode": "list",
+			"listStyle": "dot",
+			"color": "#3b82f6",
+			"titleHint": "List title",
+			"bodyHint": "First item\nSecond item\nThird item"
+		},
+		{
+			"id": "list_style2",
+			"label": "Style 2 - numbered circles",
+			"category": "Lists",
+			"mode": "list",
+			"listStyle": "number",
+			"ordered": true,
+			"color": "#6366f1",
+			"titleHint": "List title",
+			"bodyHint": "First item\nSecond item\nThird item"
+		},
+		{
+			"id": "list_style3",
+			"label": "Style 3 - check marks",
+			"category": "Lists",
+			"mode": "list",
+			"listStyle": "check",
+			"color": "#22c55e",
+			"titleHint": "List title",
+			"bodyHint": "First item\nSecond item\nThird item"
+		},
+		{
+			"id": "list_style4",
+			"label": "Style 4 - arrows",
+			"category": "Lists",
+			"mode": "list",
+			"listStyle": "arrow",
+			"color": "#f97316",
+			"titleHint": "List title",
+			"bodyHint": "First item\nSecond item\nThird item"
+		},
+		{
+			"id": "list_style5",
+			"label": "Style 5 - boxed rows",
+			"category": "Lists",
+			"mode": "list",
+			"listStyle": "boxed",
+			"color": "#14b8a6",
+			"titleHint": "List title",
+			"bodyHint": "First item\nSecond item\nThird item"
+		},
+		{
+			"id": "list_style6",
+			"label": "Style 6 - separated rows",
+			"category": "Lists",
+			"mode": "list",
+			"listStyle": "separated",
+			"color": "#a855f7",
+			"titleHint": "List title",
+			"bodyHint": "First item\nSecond item\nThird item"
+		},
+		{
+			"id": "list_check",
+			"label": "Checklist",
+			"category": "Lists",
+			"mode": "list",
+			"listStyle": "checkbox",
+			"color": "#10b981",
+			"titleHint": "Checklist",
+			"bodyHint": "[x] Done item\n[ ] Pending item"
+		},
+
+		{
+			"id": "steps",
+			"label": "Steps",
+			"category": "Layout",
+			"mode": "steps",
+			"color": "#3b82f6",
+			"titleHint": "How it works",
+			"bodyHint": "Install it :: Download and run the installer\nConfigure it :: Open the settings screen\nUse it :: You are done"
+		},
+		{
+			"id": "timeline",
+			"label": "Timeline",
+			"category": "Layout",
+			"mode": "timeline",
+			"color": "#8b5cf6",
+			"titleHint": "History",
+			"bodyHint": "2024 :: Started :: The first commit\n2025 :: Shipped :: Version 1.0 released"
+		},
+		{
+			"id": "stats",
+			"label": "Stat tiles",
+			"category": "Layout",
+			"mode": "stats",
+			"color": "#06b6d4",
+			"titleHint": "Numbers",
+			"bodyHint": "42 :: Open issues\n1.2k :: Users\n98% :: Uptime"
+		},
+		{
+			"id": "grid_2",
+			"label": "Grid - 2 columns",
+			"category": "Layout",
+			"mode": "grid",
+			"columns": 2,
+			"color": "#64748b",
+			"titleHint": "Grid title",
+			"bodyHint": "**Left cell**\n\nContent of the first cell\n---\n**Right cell**\n\nContent of the second cell"
+		},
+		{
+			"id": "grid_3",
+			"label": "Grid - 3 columns",
+			"category": "Layout",
+			"mode": "grid",
+			"columns": 3,
+			"color": "#64748b",
+			"titleHint": "Grid title",
+			"bodyHint": "**One**\n\nFirst cell\n---\n**Two**\n\nSecond cell\n---\n**Three**\n\nThird cell"
+		},
+		{
+			"id": "columns_2",
+			"label": "Plain 2 columns",
+			"category": "Layout",
+			"mode": "grid",
+			"columns": 2,
+			"bare": true,
+			"color": "#64748b",
+			"titleHint": "",
+			"bodyHint": "Left hand text\n---\nRight hand text"
+		},
+
+		{
+			"id": "box_plain",
+			"label": "Plain box",
+			"category": "Boxes",
+			"mode": "plain",
+			"color": "#64748b",
+			"titleHint": "Box title",
+			"bodyHint": "Box contents"
+		},
+		{
+			"id": "box_dashed",
+			"label": "Dashed box",
+			"category": "Boxes",
+			"mode": "plain",
+			"variant": "dashed",
+			"color": "#94a3b8",
+			"titleHint": "Box title",
+			"bodyHint": "Box contents"
+		},
+		{
+			"id": "box_shadow",
+			"label": "Shadow box",
+			"category": "Boxes",
+			"mode": "plain",
+			"variant": "shadow",
+			"color": "#475569",
+			"titleHint": "Box title",
+			"bodyHint": "Box contents"
+		},
+		{
+			"id": "banner",
+			"label": "Gradient banner",
+			"category": "Boxes",
+			"mode": "plain",
+			"variant": "banner",
+			"color": "#6366f1",
+			"titleHint": "Banner headline",
+			"bodyHint": "Supporting text for the banner"
+		},
+		{
+			"id": "hero",
+			"label": "Hero section",
+			"category": "Boxes",
+			"mode": "plain",
+			"variant": "hero",
+			"color": "#0ea5e9",
+			"titleHint": "Big headline",
+			"bodyHint": "A short introduction paragraph."
+		},
+		{
+			"id": "highlight",
+			"label": "Highlight strip",
+			"category": "Boxes",
+			"mode": "plain",
+			"variant": "strip",
+			"color": "#eab308",
+			"aliases": ["highlight_box"],
+			"titleHint": "",
+			"bodyHint": "Text you want to stand out."
+		},
+
+		{
+			"id": "quote_box",
+			"label": "Quote",
+			"category": "Special",
+			"mode": "quote",
+			"color": "#8b5cf6",
+			"aliases": ["quote"],
+			"titleHint": "Author name",
+			"bodyHint": "The quoted text goes here."
+		},
+		{
+			"id": "details",
+			"label": "Collapsible section",
+			"category": "Special",
+			"mode": "details",
+			"color": "#64748b",
+			"aliases": ["collapse", "spoiler"],
+			"titleHint": "Click to expand",
+			"bodyHint": "Hidden contents"
+		},
+		{
+			"id": "details_open",
+			"label": "Collapsible (open by default)",
+			"category": "Special",
+			"mode": "details",
+			"open": true,
+			"color": "#64748b",
+			"titleHint": "Expanded by default",
+			"bodyHint": "Visible contents"
+		},
+		{
+			"id": "badges",
+			"label": "Badge row",
+			"category": "Special",
+			"mode": "badges",
+			"color": "#0ea5e9",
+			"titleHint": "",
+			"bodyHint": "typescript, joplin, plugin, markdown"
+		},
+		{
+			"id": "keyvalue",
+			"label": "Key / value table",
+			"category": "Special",
+			"mode": "keyvalue",
+			"color": "#14b8a6",
+			"aliases": ["kv", "fields"],
+			"titleHint": "Details",
+			"bodyHint": "Status :: Active\nOwner :: Me\nDue :: Tomorrow"
+		}
+	]
+}

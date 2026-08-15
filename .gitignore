@@ -1,0 +1,9 @@
+dist/
+node_modules/
+publish/
+
+# Local tooling
+.claude/
+
+# Generated alongside the manual PDF by `npm run manual`
+docs/manual.html

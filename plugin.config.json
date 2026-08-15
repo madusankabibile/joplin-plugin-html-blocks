@@ -1,0 +1,6 @@
+{
+	"extraScripts": [
+		"markdownItPlugin/index.ts",
+		"codeMirrorPlugin/index.ts"
+	]
+}

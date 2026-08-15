@@ -1,0 +1,607 @@
+/* ==========================================================================
+   HTML Blocks - note viewer styles
+   Every block derives its colours from a single `--jh-color` (set by the
+   generated rules at the bottom of this file) mixed against the current Joplin
+   theme, so the same definition works in light and dark themes.
+   ========================================================================== */
+
+.jhtml {
+	--jh-color: #64748b;
+	--jh-bg: var(--joplin-background-color, #ffffff);
+	--jh-fg: var(--joplin-color, #24292e);
+
+	/* Plain fallbacks, replaced below where color-mix() is available. */
+	--jh-tint: transparent;
+	--jh-tint-2: transparent;
+	--jh-line: var(--jh-color);
+	--jh-strong: var(--jh-color);
+	--jh-muted: var(--jh-fg);
+
+	box-sizing: border-box;
+	margin: 1em 0;
+	color: var(--jh-fg);
+	font-family: var(--joplin-font-family, inherit);
+	line-height: 1.55;
+}
+
+@supports (color: color-mix(in srgb, red 50%, blue)) {
+	.jhtml {
+		--jh-tint: color-mix(in srgb, var(--jh-color) 10%, var(--jh-bg));
+		--jh-tint-2: color-mix(in srgb, var(--jh-color) 20%, var(--jh-bg));
+		--jh-line: color-mix(in srgb, var(--jh-color) 38%, var(--jh-bg));
+		--jh-strong: color-mix(in srgb, var(--jh-color) 72%, var(--jh-fg));
+		--jh-muted: color-mix(in srgb, var(--jh-fg) 65%, var(--jh-bg));
+	}
+}
+
+.jhtml *,
+.jhtml *::before,
+.jhtml *::after {
+	box-sizing: border-box;
+}
+
+/* --- shared header / body ------------------------------------------------ */
+
+.jhtml-head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 600;
+	color: var(--jh-strong);
+}
+
+.jhtml-icon {
+	flex: 0 0 auto;
+	line-height: 1;
+}
+
+.jhtml-title {
+	min-width: 0;
+}
+
+.jhtml-body > *:first-child {
+	margin-top: 0;
+}
+
+.jhtml-body > *:last-child {
+	margin-bottom: 0;
+}
+
+.jhtml-body p {
+	margin: 0.5em 0;
+}
+
+/* --- card / callout / plain box ------------------------------------------ */
+
+.jhtml-card,
+.jhtml-callout,
+.jhtml-plain {
+	border: 1px solid var(--jh-line);
+	border-left-width: 4px;
+	border-radius: 8px;
+	background: var(--jh-tint);
+	padding: 12px 16px;
+	overflow: hidden;
+}
+
+.jhtml-card > .jhtml-head,
+.jhtml-callout > .jhtml-head,
+.jhtml-plain > .jhtml-head {
+	margin-bottom: 8px;
+	font-size: 1.02em;
+}
+
+.jhtml-no-head {
+	padding-top: 12px;
+}
+
+.jhtml-callout > .jhtml-head {
+	font-size: 1.05em;
+}
+
+/* Unknown block type: still renders, but flags itself. */
+.jhtml-unknown {
+	border-style: dashed;
+}
+
+.jhtml-type-badge {
+	margin-left: auto;
+	padding: 1px 7px;
+	border-radius: 999px;
+	background: var(--jh-tint-2);
+	color: var(--jh-muted);
+	font-family: var(--joplin-monospace-font-family, monospace);
+	font-size: 0.72em;
+	font-weight: 500;
+}
+
+/* --- plain box variants --------------------------------------------------- */
+
+.jhtml-v-dashed {
+	border-style: dashed;
+	border-left-width: 1px;
+	background: transparent;
+}
+
+.jhtml-v-shadow {
+	border-left-width: 1px;
+	background: var(--jh-bg);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.jhtml-v-strip {
+	border: none;
+	border-left: 5px solid var(--jh-color);
+	border-radius: 0 6px 6px 0;
+	background: var(--jh-tint);
+}
+
+.jhtml-v-banner,
+.jhtml-v-hero {
+	border: none;
+	color: #ffffff;
+	background: var(--jh-color);
+	background: linear-gradient(135deg, var(--jh-color), color-mix(in srgb, var(--jh-color) 55%, #000000));
+}
+
+.jhtml-v-banner > .jhtml-head,
+.jhtml-v-hero > .jhtml-head {
+	color: #ffffff;
+}
+
+.jhtml-v-banner {
+	padding: 16px 20px;
+	border-radius: 10px;
+}
+
+.jhtml-v-hero {
+	padding: 32px 24px;
+	border-radius: 14px;
+	text-align: center;
+}
+
+.jhtml-v-hero > .jhtml-head {
+	justify-content: center;
+	font-size: 1.6em;
+	margin-bottom: 10px;
+}
+
+.jhtml-v-hero .jhtml-body {
+	font-size: 1.05em;
+	opacity: 0.92;
+}
+
+/* --- lists ---------------------------------------------------------------- */
+
+.jhtml-list {
+	border: 1px solid var(--jh-line);
+	border-radius: 8px;
+	background: var(--jh-tint);
+	padding: 12px 16px;
+}
+
+.jhtml-list > .jhtml-head {
+	margin-bottom: 8px;
+}
+
+.jhtml-items {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.jhtml-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 3px 0;
+}
+
+.jhtml-marker {
+	flex: 0 0 auto;
+	color: var(--jh-strong);
+	font-weight: 700;
+}
+
+.jhtml-text {
+	min-width: 0;
+}
+
+.jhtml-lvl-1 { margin-left: 24px; }
+.jhtml-lvl-2 { margin-left: 48px; }
+.jhtml-lvl-3 { margin-left: 72px; }
+
+.jhtml-ls-dot .jhtml-marker {
+	width: 8px;
+	height: 8px;
+	margin-top: 0.55em;
+	border-radius: 50%;
+	background: var(--jh-color);
+}
+
+.jhtml-ls-number .jhtml-marker {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: var(--jh-color);
+	color: #ffffff;
+	font-size: 0.75em;
+	line-height: 1;
+}
+
+.jhtml-ls-check .jhtml-marker,
+.jhtml-ls-arrow .jhtml-marker {
+	min-width: 1.1em;
+	font-size: 1.05em;
+	line-height: 1.5;
+}
+
+.jhtml-ls-boxed .jhtml-item {
+	margin-bottom: 6px;
+	padding: 8px 12px;
+	border-radius: 6px;
+	border-left: 3px solid var(--jh-color);
+	background: var(--jh-bg);
+}
+
+.jhtml-ls-boxed .jhtml-item:last-child {
+	margin-bottom: 0;
+}
+
+.jhtml-ls-boxed .jhtml-marker,
+.jhtml-ls-separated .jhtml-marker {
+	display: none;
+}
+
+.jhtml-ls-separated .jhtml-item {
+	padding: 8px 0;
+	border-bottom: 1px solid var(--jh-line);
+}
+
+.jhtml-ls-separated .jhtml-item:last-child {
+	border-bottom: none;
+}
+
+.jhtml-checkbox {
+	margin: 0.35em 0 0 0;
+	accent-color: var(--jh-color);
+}
+
+.jhtml-checked .jhtml-text {
+	opacity: 0.6;
+	text-decoration: line-through;
+}
+
+/* --- steps ---------------------------------------------------------------- */
+
+.jhtml-steps {
+	border: 1px solid var(--jh-line);
+	border-radius: 8px;
+	background: var(--jh-tint);
+	padding: 14px 18px;
+}
+
+.jhtml-steps > .jhtml-head {
+	margin-bottom: 10px;
+}
+
+.jhtml-steps-items {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.jhtml-step {
+	position: relative;
+	display: flex;
+	gap: 14px;
+	padding-bottom: 16px;
+}
+
+.jhtml-step:last-child {
+	padding-bottom: 0;
+}
+
+.jhtml-step::before {
+	content: "";
+	position: absolute;
+	left: 13px;
+	top: 28px;
+	bottom: 0;
+	width: 2px;
+	background: var(--jh-line);
+}
+
+.jhtml-step:last-child::before {
+	display: none;
+}
+
+.jhtml-step-num {
+	position: relative;
+	z-index: 1;
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	background: var(--jh-color);
+	color: #ffffff;
+	font-weight: 700;
+	font-size: 0.85em;
+}
+
+.jhtml-step-title {
+	font-weight: 600;
+	color: var(--jh-strong);
+	padding-top: 3px;
+}
+
+.jhtml-step-text {
+	color: var(--jh-muted);
+	font-size: 0.95em;
+	margin-top: 2px;
+}
+
+/* --- timeline ------------------------------------------------------------- */
+
+.jhtml-timeline {
+	border: 1px solid var(--jh-line);
+	border-radius: 8px;
+	background: var(--jh-tint);
+	padding: 14px 18px;
+}
+
+.jhtml-timeline > .jhtml-head {
+	margin-bottom: 10px;
+}
+
+.jhtml-tl-items {
+	list-style: none;
+	margin: 0;
+	padding: 0 0 0 6px;
+}
+
+.jhtml-tl-item {
+	position: relative;
+	padding: 0 0 18px 22px;
+	border-left: 2px solid var(--jh-line);
+}
+
+.jhtml-tl-item:last-child {
+	border-left-color: transparent;
+	padding-bottom: 0;
+}
+
+.jhtml-tl-dot {
+	position: absolute;
+	left: -7px;
+	top: 4px;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: var(--jh-color);
+	box-shadow: 0 0 0 3px var(--jh-tint);
+}
+
+.jhtml-tl-when {
+	display: inline-block;
+	margin-bottom: 2px;
+	padding: 1px 8px;
+	border-radius: 999px;
+	background: var(--jh-tint-2);
+	color: var(--jh-strong);
+	font-size: 0.75em;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+
+.jhtml-tl-title {
+	font-weight: 600;
+}
+
+.jhtml-tl-text {
+	color: var(--jh-muted);
+	font-size: 0.95em;
+}
+
+/* --- stats ---------------------------------------------------------------- */
+
+.jhtml-stats > .jhtml-head {
+	margin-bottom: 10px;
+}
+
+.jhtml-stats-items {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 10px;
+}
+
+.jhtml-stat {
+	padding: 14px 12px;
+	border: 1px solid var(--jh-line);
+	border-radius: 8px;
+	background: var(--jh-tint);
+	text-align: center;
+}
+
+.jhtml-stat-value {
+	font-size: 1.7em;
+	font-weight: 700;
+	line-height: 1.1;
+	color: var(--jh-strong);
+}
+
+.jhtml-stat-label {
+	margin-top: 4px;
+	font-size: 0.8em;
+	color: var(--jh-muted);
+}
+
+/* --- badges --------------------------------------------------------------- */
+
+.jhtml-badges > .jhtml-head {
+	margin-bottom: 8px;
+}
+
+.jhtml-badge-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.jhtml-badge {
+	display: inline-block;
+	padding: 3px 10px;
+	border: 1px solid var(--jh-line);
+	border-radius: 999px;
+	background: var(--jh-tint);
+	color: var(--jh-strong);
+	font-size: 0.82em;
+	font-weight: 600;
+}
+
+/* --- key / value ---------------------------------------------------------- */
+
+.jhtml-keyvalue {
+	border: 1px solid var(--jh-line);
+	border-radius: 8px;
+	background: var(--jh-tint);
+	padding: 10px 16px;
+}
+
+.jhtml-keyvalue > .jhtml-head {
+	margin-bottom: 6px;
+}
+
+.jhtml-kv {
+	display: grid;
+	grid-template-columns: minmax(90px, 30%) 1fr;
+	gap: 12px;
+	padding: 7px 0;
+	border-bottom: 1px solid var(--jh-line);
+}
+
+.jhtml-kv:last-child {
+	border-bottom: none;
+}
+
+.jhtml-kv-key {
+	font-weight: 600;
+	color: var(--jh-strong);
+}
+
+/* --- grid ----------------------------------------------------------------- */
+
+.jhtml-grid > .jhtml-head {
+	margin-bottom: 10px;
+}
+
+.jhtml-grid-inner {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.jhtml-cols-3 .jhtml-grid-inner {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.jhtml-cell {
+	padding: 12px 14px;
+	border: 1px solid var(--jh-line);
+	border-radius: 8px;
+	background: var(--jh-tint);
+	min-width: 0;
+}
+
+.jhtml-cell > *:first-child { margin-top: 0; }
+.jhtml-cell > *:last-child { margin-bottom: 0; }
+
+.jhtml-bare .jhtml-cell {
+	padding: 0;
+	border: none;
+	background: transparent;
+}
+
+@media (max-width: 620px) {
+	.jhtml-grid-inner,
+	.jhtml-cols-3 .jhtml-grid-inner {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+/* --- quote ---------------------------------------------------------------- */
+
+blockquote.jhtml-quote {
+	position: relative;
+	margin: 1em 0;
+	padding: 14px 18px 14px 52px;
+	border: none;
+	border-left: 4px solid var(--jh-color);
+	border-radius: 0 8px 8px 0;
+	background: var(--jh-tint);
+}
+
+blockquote.jhtml-quote::before {
+	content: "\201C";
+	position: absolute;
+	left: 12px;
+	top: 2px;
+	color: var(--jh-line);
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 3em;
+	line-height: 1;
+}
+
+blockquote.jhtml-quote .jhtml-cite {
+	margin-top: 8px;
+	color: var(--jh-muted);
+	font-size: 0.88em;
+}
+
+blockquote.jhtml-quote .jhtml-cite::before {
+	content: "\2014\00a0";
+}
+
+/* --- details -------------------------------------------------------------- */
+
+details.jhtml-details {
+	border: 1px solid var(--jh-line);
+	border-left-width: 4px;
+	border-radius: 8px;
+	background: var(--jh-tint);
+	padding: 0;
+	overflow: hidden;
+}
+
+details.jhtml-details > .jhtml-summary {
+	padding: 10px 16px;
+	cursor: pointer;
+	font-weight: 600;
+	color: var(--jh-strong);
+	list-style: revert;
+	user-select: none;
+}
+
+details.jhtml-details[open] > .jhtml-summary {
+	border-bottom: 1px solid var(--jh-line);
+}
+
+details.jhtml-details > .jhtml-body {
+	padding: 12px 16px;
+}
+
+/* --- printing / PDF export ------------------------------------------------ */
+
+@media print {
+	.jhtml {
+		break-inside: avoid;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+}

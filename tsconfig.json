@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist/",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"target": "es2019",
+		"lib": ["es2019", "dom"],
+		"jsx": "react",
+		"allowJs": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"baseUrl": "."
+	},
+	"exclude": ["node_modules", "dist", "publish"]
+}
