@@ -222,21 +222,29 @@ joplin.plugins.register({
 		});
 
 		// -------------------------------------------------------------
-		// Menus and toolbar
+		// Toolbar and menus
 		// -------------------------------------------------------------
-		await joplin.views.menus.create(
-			'htmlBlocksMenu',
-			'HTML Blocks',
-			buildMenu(),
-			MenuItemLocation.Tools,
-		);
-
+		// The editor toolbar exists on both desktop and mobile, so it is
+		// registered first: it is the only entry point on mobile.
 		if (await joplin.settings.value('showToolbarButton')) {
 			await joplin.views.toolbarButtons.create(
 				'htmlBlocksToolbarButton',
 				PICKER_COMMAND,
 				ToolbarButtonLocation.EditorToolbar,
 			);
+		}
+
+		// `views.menus` is desktop-only - mobile has no menu bar - so a failure
+		// here must not abort onStart and take the rest of the plugin with it.
+		try {
+			await joplin.views.menus.create(
+				'htmlBlocksMenu',
+				'HTML Blocks',
+				buildMenu(),
+				MenuItemLocation.Tools,
+			);
+		} catch (_error) {
+			// No menu bar on this platform.
 		}
 	},
 });
