@@ -1,99 +1,315 @@
-#jhtml-picker {
-	font-family: var(--joplin-font-family, sans-serif);
-	color: var(--joplin-color, #222);
-	width: 620px;
-	max-width: 100%;
+/* ==========================================================================
+   "Insert an HTML block" dialog.
+   The thumbnails are real blocks, rendered by the viewer renderer and shrunk
+   with a transform, so what the dialog shows is what the note gets. The viewer
+   stylesheet is loaded alongside this one (see src/index.ts).
+   ========================================================================== */
+
+/* Joplin sizes the dialog frame from the bounding box of its content element,
+ * and that frame's width is what the element is then laid out in. A block box
+ * can only ever report the width it already has, so a plugin dialog is stuck at
+ * the frame's default width - about 300px - however wide its content wants to
+ * be. `max-content` breaks the loop: the element reports what the picker asks
+ * for, Joplin widens the frame to match, and the second pass is stable. */
+#joplin-plugin-content {
+	width: max-content;
+	max-width: none;
 }
 
-#jhtml-picker h2 {
-	margin: 0 0 12px 0;
-	font-size: 1.15em;
+#jhtml-picker {
+	--pick-line: var(--joplin-divider-color, #d7dbe0);
+	--pick-accent: var(--joplin-url-color, #155bb5);
+	--pick-bg: var(--joplin-background-color, #ffffff);
+	--pick-bg-2: var(--joplin-background-color-hover3, rgba(127, 127, 127, 0.08));
+
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	/* Fixed pixels, not vh or %: Joplin sizes the dialog frame to fit its
+	 * content, so both viewport units and percentages are measured against a
+	 * box that is itself derived from this one. `max-width: 100%` in
+	 * particular would pin the picker to the frame's starting width.
+	 *
+	 * These are the fallbacks. dialog.js replaces them with a size worked out
+	 * from the screen, since the picker cannot measure the Joplin window it is
+	 * sitting in. */
+	width: 1120px;
+	height: 600px;
+	font-family: var(--joplin-font-family, sans-serif);
+	color: var(--joplin-color, #222);
+}
+
+/* --- header --------------------------------------------------------------- */
+
+.picker-head {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	flex: 0 0 auto;
+}
+
+.picker-head h2 {
+	margin: 0;
+	font-size: 1.1em;
+	white-space: nowrap;
 }
 
 #jhtml-search {
-	width: 100%;
-	box-sizing: border-box;
-	padding: 8px 10px;
-	margin-bottom: 12px;
-	border: 1px solid var(--joplin-divider-color, #ccc);
+	flex: 1 1 auto;
+	min-width: 0;
+	padding: 7px 11px;
+	border: 1px solid var(--pick-line);
 	border-radius: 6px;
-	background: var(--joplin-background-color, #fff);
+	background: var(--pick-bg);
 	color: inherit;
-	font-size: 1em;
+	font: inherit;
 }
 
-#jhtml-list {
-	max-height: 46vh;
+#jhtml-search:focus {
+	outline: none;
+	border-color: var(--pick-accent);
+	box-shadow: 0 0 0 2px rgba(21, 91, 181, 0.18);
+}
+
+/* --- body ----------------------------------------------------------------- */
+
+.picker-body {
+	display: flex;
+	gap: 14px;
+	flex: 1 1 auto;
+	min-height: 0;
+}
+
+#jhtml-cats {
+	flex: 0 0 210px;
 	overflow-y: auto;
-	padding-right: 4px;
+	padding-right: 6px;
+	border-right: 1px solid var(--pick-line);
 }
 
-#jhtml-picker .category h3 {
-	margin: 14px 0 6px 0;
-	font-size: 0.75em;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
-	opacity: 0.6;
-}
-
-#jhtml-picker .cards {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 6px;
-}
-
-#jhtml-picker .block-card {
+.cat {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	justify-content: space-between;
+	gap: 8px;
 	width: 100%;
-	padding: 8px 10px;
-	text-align: left;
-	border: 1px solid var(--joplin-divider-color, #ddd);
+	padding: 7px 11px;
+	margin-bottom: 2px;
+	border: none;
 	border-radius: 6px;
 	background: transparent;
 	color: inherit;
 	font: inherit;
+	font-size: 0.95em;
+	text-align: left;
 	cursor: pointer;
 }
 
-#jhtml-picker .block-card:hover {
-	border-color: var(--joplin-url-color, #155bb5);
+.cat:hover {
+	background: var(--pick-bg-2);
 }
 
-#jhtml-picker .block-card.selected {
-	border-color: var(--joplin-url-color, #155bb5);
-	box-shadow: inset 0 0 0 1px var(--joplin-url-color, #155bb5);
+.cat.active {
+	background: var(--pick-accent);
+	color: #ffffff;
+	font-weight: 600;
 }
 
-#jhtml-picker .swatch {
+.cat-count {
 	flex: 0 0 auto;
-	width: 14px;
-	height: 14px;
-	border-radius: 4px;
+	opacity: 0.6;
+	font-size: 0.85em;
+	font-variant-numeric: tabular-nums;
 }
 
-#jhtml-picker .block-text {
+#jhtml-list {
+	flex: 1 1 auto;
+	overflow-y: auto;
+	padding-right: 6px;
+}
+
+/* --- groups and tiles ----------------------------------------------------- */
+
+.group {
+	margin-bottom: 18px;
+}
+
+.group-title {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	margin: 0 0 8px 0;
+	padding: 4px 0;
+	background: var(--pick-bg);
+	font-size: 0.72em;
+	font-weight: 700;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	opacity: 0.65;
+}
+
+/* One category at a time needs no heading to tell them apart. */
+#jhtml-picker.single-group .group-title {
+	display: none;
+}
+
+.tiles {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 12px;
+	/* Each tile keeps its own height. Stretching a one line card to the height
+	 * of the tallest block beside it just buys white space. */
+	align-items: start;
+}
+
+.tile {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	overflow: hidden;
+	border: 1px solid var(--pick-line);
+	border-radius: 8px;
+	background: var(--pick-bg);
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+}
+
+.tile:hover {
+	border-color: var(--pick-accent);
+}
+
+.tile.selected {
+	border-color: var(--pick-accent);
+	box-shadow: 0 0 0 2px var(--pick-accent);
+}
+
+.hidden {
+	display: none !important;
+}
+
+/* --- thumbnails ----------------------------------------------------------- */
+
+.jhtml-thumb {
+	position: relative;
+	flex: 1 1 auto;
+	max-height: 190px;
+	overflow: hidden;
+	border-bottom: 1px solid var(--pick-line);
+	background: var(--pick-bg);
+	pointer-events: none;
+}
+
+/* The block is drawn at note width and then shrunk, so proportions, borders
+ * and font sizes stay exactly what the viewer draws. `zoom` rather than a
+ * transform, because it shrinks the box as well as the paint - a row of short
+ * blocks then gets a short row rather than 190px of white space. */
+.jhtml-thumb-inner {
+	padding: 12px 14px;
+	/* Percentages resolve in the zoomed coordinate space, so the block is laid
+	 * out at 1/0.7 ~ 1.4x the tile width - a narrow note column - and painted
+	 * back down to fit. Shrinking it further would fit more of a long block in,
+	 * but the text stops being readable, and a preview nobody can read is not
+	 * worth the space it saves. */
+	zoom: 0.7;
+}
+
+/* Anything taller than the thumbnail fades out rather than being cut mid-line. */
+.jhtml-thumb::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 26px;
+	background: linear-gradient(to bottom, transparent, var(--pick-bg));
+}
+
+.jhtml-thumb .jhtml {
+	margin: 0;
+}
+
+/* --- tile footer ---------------------------------------------------------- */
+
+.tile-foot {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 9px 12px;
+	background: var(--pick-bg-2);
+}
+
+.tile-swatch {
+	flex: 0 0 auto;
+	width: 12px;
+	height: 12px;
+	border-radius: 3px;
+}
+
+.tile-names {
 	display: flex;
 	flex-direction: column;
 	min-width: 0;
 }
 
-#jhtml-picker .block-label {
+.tile-label {
+	font-size: 0.95em;
 	font-weight: 600;
-	font-size: 0.9em;
-}
-
-#jhtml-picker .block-sample {
-	font-size: 0.75em;
-	opacity: 0.65;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-#jhtml-picker .hint {
-	margin: 12px 0 0 0;
+.tile-id {
+	font-family: var(--joplin-monospace-font-family, monospace);
 	font-size: 0.8em;
-	opacity: 0.7;
+	opacity: 0.6;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.tile-alias {
+	display: none;
+}
+
+/* --- compact mode (previews turned off) ----------------------------------- */
+
+#jhtml-picker.compact .tiles {
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+#jhtml-picker.compact .tile-foot {
+	background: transparent;
+	padding: 8px 10px;
+}
+
+/* --- footer --------------------------------------------------------------- */
+
+.empty {
+	margin: 24px 0;
+	text-align: center;
+	opacity: 0.6;
+}
+
+.picker-foot {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex: 0 0 auto;
+	padding-top: 10px;
+	border-top: 1px solid var(--pick-line);
+	font-size: 0.9em;
+}
+
+.current {
+	font-family: var(--joplin-monospace-font-family, monospace);
+	font-weight: 600;
+	color: var(--pick-accent);
+}
+
+.hint {
+	margin-left: auto;
+	opacity: 0.65;
 }

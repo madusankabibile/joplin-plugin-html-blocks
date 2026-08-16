@@ -14,7 +14,31 @@ export type BlockMode =
 	| 'timeline'
 	| 'stats'
 	| 'badges'
-	| 'keyvalue';
+	| 'keyvalue'
+	| 'progress'
+	| 'rating'
+	| 'table'
+	| 'compare'
+	| 'faq'
+	| 'feature'
+	| 'chat';
+
+/**
+ * The chrome around a block: fill, border, shadow. Themes are orthogonal to
+ * modes - any theme can be put on any mode, and it only ever changes CSS.
+ */
+export type BlockTheme =
+	| 'soft'
+	| 'solid'
+	| 'outline'
+	| 'gradient'
+	| 'elevated'
+	| 'glass'
+	| 'neon'
+	| 'minimal'
+	| 'ribbon'
+	| 'dashed'
+	| 'underline';
 
 export type ListStyle =
 	| 'dot'
@@ -23,7 +47,22 @@ export type ListStyle =
 	| 'arrow'
 	| 'boxed'
 	| 'separated'
-	| 'checkbox';
+	| 'checkbox'
+	| 'checkbox-boxed'
+	| 'square'
+	| 'dash'
+	| 'star'
+	| 'alpha'
+	| 'roman'
+	| 'chevron'
+	| 'plus'
+	| 'numbox'
+	| 'cards'
+	| 'pill'
+	| 'rank'
+	| 'icon'
+	| 'striped'
+	| 'inline';
 
 export interface BlockDefinition {
 	/** The identifier typed after the opening fence, e.g. `!!! card_light_blue`. */
@@ -37,13 +76,15 @@ export interface BlockDefinition {
 	/** Base colour. Every other colour in the block is mixed from this one so
 	 * that the block adapts to the current Joplin theme. */
 	color: string;
+	/** Chrome style. Defaults to `soft`. */
+	theme?: BlockTheme;
 	/** Alternative ids accepted by the parser. */
 	aliases?: string[];
 	/** Emoji shown in the header (callouts). */
 	icon?: string;
 	/** Header text used when the author does not write one (callouts). */
 	defaultTitle?: string;
-	/** Extra class modifier for `plain` blocks. */
+	/** Extra class modifier, on top of the theme. */
 	variant?: string;
 	listStyle?: ListStyle;
 	ordered?: boolean;
@@ -52,7 +93,7 @@ export interface BlockDefinition {
 	bare?: boolean;
 	/** `details` only: expanded on load. */
 	open?: boolean;
-	/** Placeholder text used when inserting a snippet. */
+	/** Placeholder text used when inserting a snippet, and as the preview body. */
 	titleHint?: string;
 	bodyHint?: string;
 }

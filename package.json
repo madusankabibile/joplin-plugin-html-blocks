@@ -1,12 +1,14 @@
 {
   "name": "joplin-plugin-html-blocks",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "description": "Write styled HTML sections - cards, callouts, fancy lists, steps, timelines, grids and more - using a simple `!!! type` ... `!!!->` markdown fence.",
   "author": "madusanka",
   "scripts": {
+    "blocks": "node tools/generate-blocks.js",
     "styles": "node tools/generate-styles.js",
+    "icons": "node tools/generate-icons.js",
     "manual": "node tools/generate-manual.js",
-    "dist": "npm run styles && webpack --env joplin-plugin-config=buildMain && webpack --env joplin-plugin-config=buildExtraScripts && webpack --env joplin-plugin-config=createArchive",
+    "dist": "npm run blocks && npm run styles && webpack --env joplin-plugin-config=buildMain && webpack --env joplin-plugin-config=buildExtraScripts && webpack --env joplin-plugin-config=createArchive",
     "prepare": "npm run dist",
     "updateVersion": "webpack --env joplin-plugin-config=updateVersion",
     "update": "npm install -g generator-joplin && yo joplin --node-package-manager npm --update --force"

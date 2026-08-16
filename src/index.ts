@@ -15,11 +15,29 @@ import {
 	commandNameFor,
 	resolveBlock,
 } from './blocks';
+import { pickerHtml, withRecent } from './picker';
 
 const MARKDOWN_IT_SCRIPT_ID = 'htmlBlocks.markdownIt';
 const CODE_MIRROR_SCRIPT_ID = 'htmlBlocks.codeMirror';
 const PICKER_COMMAND = 'htmlBlocks.showPicker';
 const CHEAT_SHEET_COMMAND = 'htmlBlocks.insertCheatSheet';
+const RECENT_SETTING = 'recentBlocks';
+
+/** The ids of the blocks inserted most recently, newest first. */
+const readRecent = async (): Promise<string[]> => {
+	try {
+		const raw = await joplin.settings.value(RECENT_SETTING);
+		const parsed = JSON.parse(raw || '[]');
+		return Array.isArray(parsed) ? parsed.filter(id => typeof id === 'string') : [];
+	} catch (_error) {
+		return [];
+	}
+};
+
+const rememberBlock = async (blockId: string) => {
+	const recent = withRecent(await readRecent(), blockId);
+	await joplin.settings.setValue(RECENT_SETTING, JSON.stringify(recent));
+};
 
 /**
  * Inserts a block at the cursor. The markdown editor gets the rich treatment
@@ -40,43 +58,8 @@ const insertBlock = async (blockId: string) => {
 		const snippet = buildSnippet(def, selected && selected.trim() ? { body: selected } : {});
 		await joplin.commands.execute('insertText', snippet.text);
 	}
-};
 
-const escapeHtml = (text: string): string => text
-	.replace(/&/g, '&amp;')
-	.replace(/</g, '&lt;')
-	.replace(/>/g, '&gt;')
-	.replace(/"/g, '&quot;');
-
-const pickerHtml = (): string => {
-	const sections = categories().map(category => {
-		const cards = blocksInCategory(category).map(block => {
-			const sample = `!!! ${block.id}${block.titleHint ? ` ${block.titleHint}` : ''}`;
-			return `
-				<button type="button" class="block-card" data-id="${escapeHtml(block.id)}"
-						data-search="${escapeHtml(`${block.id} ${block.label} ${category}`.toLowerCase())}">
-					<span class="swatch" style="background:${escapeHtml(block.color)}"></span>
-					<span class="block-text">
-						<span class="block-label">${escapeHtml(block.icon ? `${block.icon} ` : '')}${escapeHtml(block.label)}</span>
-						<code class="block-sample">${escapeHtml(sample)}</code>
-					</span>
-				</button>`;
-		}).join('');
-
-		return `<section class="category" data-category="${escapeHtml(category)}">
-			<h3>${escapeHtml(category)}</h3>
-			<div class="cards">${cards}</div>
-		</section>`;
-	}).join('');
-
-	return `
-		<form name="blockForm" id="jhtml-picker">
-			<h2>Insert an HTML block</h2>
-			<input type="text" id="jhtml-search" placeholder="Filter blocks..." autocomplete="off">
-			<input type="hidden" name="blockId" id="jhtml-selected" value="${escapeHtml(blocks[0].id)}">
-			<div id="jhtml-list">${sections}</div>
-			<p class="hint">Select a block, then press OK. Any text you had selected becomes the block body.</p>
-		</form>`;
+	await rememberBlock(def.id);
 };
 
 const cheatSheet = (): string => {
@@ -155,6 +138,21 @@ joplin.plugins.register({
 				label: 'Show the toolbar button',
 				description: 'Restart Joplin for a change to take effect.',
 			},
+			showPickerPreviews: {
+				value: true,
+				type: SettingItemType.Bool,
+				section: 'htmlBlocks',
+				public: true,
+				label: 'Show previews in the block picker',
+				description: 'Draw every block in the picker instead of listing names only.',
+			},
+			[RECENT_SETTING]: {
+				value: '[]',
+				type: SettingItemType.String,
+				section: 'htmlBlocks',
+				public: false,
+				label: 'Recently used blocks',
+			},
 		});
 
 		// -------------------------------------------------------------
@@ -185,13 +183,27 @@ joplin.plugins.register({
 		// Picker dialog
 		// -------------------------------------------------------------
 		const dialog = await joplin.views.dialogs.create('htmlBlocksPicker');
-		await joplin.views.dialogs.setHtml(dialog, pickerHtml());
+		// The thumbnails are real blocks, so they need the viewer's own rules.
+		// Those are inlined into the HTML by `pickerHtml` rather than linked
+		// here: Joplin replaces the dialog's content on every open, and the
+		// previews are the one thing that must not depend on a second file
+		// resolving inside the dialog frame.
 		await joplin.views.dialogs.addScript(dialog, './dialog/dialog.css');
 		await joplin.views.dialogs.addScript(dialog, './dialog/dialog.js');
 		await joplin.views.dialogs.setButtons(dialog, [
 			{ id: 'ok', title: 'Insert' },
 			{ id: 'cancel', title: 'Cancel' },
 		]);
+
+		// Rebuilt on every open so the "recently used" row is up to date.
+		const refreshDialog = async () => {
+			await joplin.views.dialogs.setHtml(dialog, pickerHtml({
+				previews: await joplin.settings.value('showPickerPreviews'),
+				recent: await readRecent(),
+			}));
+		};
+
+		await refreshDialog();
 
 		// -------------------------------------------------------------
 		// Commands
@@ -203,6 +215,8 @@ joplin.plugins.register({
 			label: 'Insert HTML block...',
 			iconName: 'fas fa-layer-group',
 			execute: async () => {
+				await refreshDialog();
+
 				const result = await joplin.views.dialogs.open(dialog);
 				if (result.id !== 'ok') return;
 
