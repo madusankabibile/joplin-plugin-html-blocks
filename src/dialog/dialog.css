@@ -313,3 +313,132 @@
 	margin-left: auto;
 	opacity: 0.65;
 }
+
+/* ==========================================================================
+   Phones and tablets
+   dialog.js decides the platform once, from the device, and marks the picker
+   with `.mobile` (and <body> with `.jhtml-mobile`). Viewport media queries
+   cannot make that call: on desktop the dialog frame starts out about 300px
+   wide and only grows to fit `max-content`, so a `max-width` query would match
+   on the first pass and pin the picker to the narrow layout for good.
+   ========================================================================== */
+
+/* The `max-content` trick above is what widens the desktop frame; on a phone
+ * there is no room to widen into, and it only buys sideways scrolling. */
+body.jhtml-mobile {
+	margin: 0;
+	overflow-x: hidden;
+}
+
+body.jhtml-mobile #joplin-plugin-content {
+	width: auto;
+	max-width: 100%;
+}
+
+#jhtml-picker.mobile {
+	/* Fills the frame instead of asking for a size, and caps its height so the
+	 * list scrolls rather than the dialog - the search box and the Insert
+	 * button stay put. dialog.js sets the cap from the screen. */
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	gap: 10px;
+}
+
+/* --- header --------------------------------------------------------------- */
+
+/* A title bar costs a whole row on a phone, and the button that opened the
+ * dialog already said what this is. */
+#jhtml-picker.mobile .picker-head h2 {
+	display: none;
+}
+
+#jhtml-picker.mobile #jhtml-search {
+	padding: 9px 12px;
+	/* Under 16px, iOS zooms the page in when the field takes focus. */
+	font-size: 16px;
+}
+
+/* --- categories: a chip row, not a sidebar -------------------------------- */
+
+#jhtml-picker.mobile .picker-body {
+	flex-direction: column;
+	gap: 10px;
+}
+
+#jhtml-picker.mobile #jhtml-cats {
+	display: flex;
+	flex: 0 0 auto;
+	gap: 6px;
+	overflow-x: auto;
+	overflow-y: hidden;
+	padding: 0 0 8px 0;
+	border-right: none;
+	border-bottom: 1px solid var(--pick-line);
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+}
+
+#jhtml-picker.mobile #jhtml-cats::-webkit-scrollbar {
+	display: none;
+}
+
+#jhtml-picker.mobile .cat {
+	flex: 0 0 auto;
+	width: auto;
+	min-height: 40px;
+	margin: 0;
+	padding: 8px 14px;
+	border: 1px solid var(--pick-line);
+	border-radius: 999px;
+	white-space: nowrap;
+}
+
+#jhtml-picker.mobile .cat.active {
+	border-color: var(--pick-accent);
+}
+
+/* --- tiles ---------------------------------------------------------------- */
+
+/* `min(100%, 200px)` rather than a flat 200px: on the narrowest phones the
+ * track shrinks to the column instead of overflowing it. */
+#jhtml-picker.mobile .tiles {
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+	gap: 10px;
+}
+
+#jhtml-picker.mobile .jhtml-thumb {
+	max-height: 140px;
+}
+
+/* A phone tile is the whole column rather than one of three, so the block is
+ * already being laid out at a comfortable width and does not need shrinking as
+ * hard as the desktop grid does - and small text is harder to read on a phone,
+ * not easier. */
+#jhtml-picker.mobile .jhtml-thumb-inner {
+	padding: 10px;
+	zoom: 0.65;
+}
+
+/* Tiles are tapped, not clicked, so the footer doubles as the touch target. */
+#jhtml-picker.mobile .tile-foot {
+	min-height: 44px;
+	padding: 10px 12px;
+}
+
+#jhtml-picker.mobile .group {
+	margin-bottom: 14px;
+}
+
+/* --- footer --------------------------------------------------------------- */
+
+#jhtml-picker.mobile .picker-foot {
+	padding-top: 8px;
+	font-size: 0.85em;
+}
+
+/* Keyboard advice on a device with no keyboard, in the space a whole tile
+ * could have used. */
+#jhtml-picker.mobile .hint {
+	display: none;
+}

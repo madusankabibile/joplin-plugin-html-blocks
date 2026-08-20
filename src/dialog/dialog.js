@@ -13,6 +13,7 @@
 (function() {
 	const slice = Array.prototype.slice;
 	let activeCategory = '*';
+	let mobile = false;
 
 	const root = () => document.getElementById('jhtml-picker');
 	const searchBox = () => document.getElementById('jhtml-search');
@@ -99,7 +100,13 @@
 
 		const all = cats();
 		for (let i = 0; i < all.length; i++) {
-			all[i].classList.toggle('active', all[i].getAttribute('data-category') === category);
+			const active = all[i].getAttribute('data-category') === category;
+			all[i].classList.toggle('active', active);
+			// The categories are a scrolling chip row on a phone, so the one in
+			// use can easily be off the side of it.
+			if (active && mobile && all[i].scrollIntoView) {
+				all[i].scrollIntoView({ block: 'nearest', inline: 'center' });
+			}
 		}
 
 		const search = searchBox();
@@ -193,14 +200,53 @@
 		move(steps[event.key]());
 	});
 
+	// Desktop and mobile want opposite things from the frame - see fitToScreen -
+	// and a viewport media query cannot tell them apart, because the desktop
+	// dialog frame also starts out phone width and only grows once the picker
+	// has asked for room. So the platform is decided here, from the device.
+	function isMobile() {
+		// Joplin's mobile app draws its webviews with react-native-webview,
+		// which is the one signal that means "the Joplin mobile app" and
+		// nothing else.
+		if (window.ReactNativeWebView) return true;
+
+		const ua = navigator.userAgent || '';
+		if (/Android|iPhone|iPad|iPod/i.test(ua)) return true;
+
+		// Belt and braces for a mobile build this does not know about: a touch
+		// screen with no pointer, on a small display.
+		const touch = window.matchMedia
+			&& window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+		const screen = window.screen;
+		return !!(touch && screen && screen.availWidth && screen.availWidth <= 900);
+	}
+
 	// The picker cannot measure the Joplin window: it lives in a frame that
 	// Joplin sizes from the picker's own box, so asking about the space
 	// available is circular. The screen is the one honest number in reach, so
 	// the dialog takes a share of it and leaves room for the window frame, the
 	// dialog's padding and the button bar underneath.
 	function fitToScreen(form) {
-		const screen = window.screen;
-		if (!screen || !screen.availWidth || !screen.availHeight) return;
+		const screen = window.screen || {};
+
+		if (mobile) {
+			// Nothing to ask for on a phone: the frame is already as wide as
+			// the screen, so the picker fills it rather than demanding a
+			// desktop sized box and pushing half of itself off the side.
+			//
+			// A cap rather than a height, so a short list gives a short dialog,
+			// and a long one scrolls the list while the search field and the
+			// Insert button stay where they are.
+			const available = screen.availHeight || window.innerHeight || 0;
+			form.style.width = '100%';
+			form.style.height = 'auto';
+			if (available) {
+				form.style.maxHeight = Math.max(320, Math.min(760, Math.round(available * 0.68))) + 'px';
+			}
+			return;
+		}
+
+		if (!screen.availWidth || !screen.availHeight) return;
 
 		const width = Math.max(720, Math.min(1500, Math.round(screen.availWidth * 0.78)));
 		const height = Math.max(420, Math.min(900, Math.round(screen.availHeight * 0.72)));
@@ -215,11 +261,22 @@
 		if (!form || form.getAttribute('data-ready') === '1') return;
 		form.setAttribute('data-ready', '1');
 
+		mobile = isMobile();
+		if (mobile) {
+			form.classList.add('mobile');
+			// On <body> as well: the rule that lets the desktop frame grow
+			// past its default width lives on Joplin's own wrapper element,
+			// outside the picker.
+			if (document.body) document.body.classList.add('jhtml-mobile');
+		}
+
 		fitToScreen(form);
 		setCategory(form.getAttribute('data-start') || '*');
 
+		// Focusing the field opens the on-screen keyboard, which would cover
+		// the blocks the dialog was opened to show.
 		const search = searchBox();
-		if (search) search.focus();
+		if (search && !mobile) search.focus();
 	}
 
 	function watch() {
