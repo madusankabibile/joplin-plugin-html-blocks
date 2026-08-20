@@ -15,10 +15,14 @@
 	box-shadow: inset 3px 0 0 var(--jh-color);
 }
 
+/* The tints are deliberately translucent rather than mixed into the editor
+ * background: CodeMirror draws the selection in a layer *behind* .cm-content
+ * (drawSelection), so an opaque line background hides it completely and makes
+ * the block look unselectable. */
 @supports (color: color-mix(in srgb, red 50%, blue)) {
 	.cm-jhtml-line {
-		--jh-tint: color-mix(in srgb, var(--jh-color) 8%, var(--jh-bg));
-		--jh-tint-2: color-mix(in srgb, var(--jh-color) 18%, var(--jh-bg));
+		--jh-tint: color-mix(in srgb, var(--jh-color) 8%, transparent);
+		--jh-tint-2: color-mix(in srgb, var(--jh-color) 18%, transparent);
 		--jh-strong: color-mix(in srgb, var(--jh-color) 70%, var(--jh-fg));
 		--jh-muted: color-mix(in srgb, var(--jh-fg) 60%, var(--jh-bg));
 	}
