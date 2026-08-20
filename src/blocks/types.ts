@@ -21,7 +21,24 @@ export type BlockMode =
 	| 'compare'
 	| 'faq'
 	| 'feature'
-	| 'chat';
+	| 'chat'
+	| 'chart'
+	| 'flow'
+	| 'tree'
+	| 'buttons'
+	| 'art'
+	| 'bigtext';
+
+/** The shape a `chart` block is drawn as. Everything is CSS - no SVG, no script. */
+export type ChartKind =
+	| 'column'
+	| 'bar'
+	| 'pie'
+	| 'donut'
+	| 'line'
+	| 'area'
+	| 'gauge'
+	| 'stack';
 
 /**
  * The chrome around a block: fill, border, shadow. Themes are orthogonal to
@@ -86,6 +103,11 @@ export interface BlockDefinition {
 	defaultTitle?: string;
 	/** Extra class modifier, on top of the theme. */
 	variant?: string;
+	/** `chart` only: which chart is drawn. */
+	chart?: ChartKind;
+	/** Adds a `jhtml-anim-<name>` class. Every animation is disabled again under
+	 * `prefers-reduced-motion`. */
+	animation?: string;
 	listStyle?: ListStyle;
 	ordered?: boolean;
 	columns?: number;

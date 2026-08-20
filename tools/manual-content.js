@@ -49,6 +49,30 @@ const SAMPLES = {
 		title: 'Tags',
 		body: 'markdown, joplin, plugin, css, no-dependencies',
 	},
+	chart: {
+		title: 'Downloads per month',
+		body: 'Jan :: 1,240\nFeb :: 1,980\nMar :: 3,410\nApr :: 2,760\nMay :: 4,120',
+	},
+	flow: {
+		title: 'How a note is rendered',
+		body: 'Markdown :: What you type\nRenderer :: The fence becomes HTML\nViewer :: What you read',
+	},
+	tree: {
+		title: 'Where everything lives',
+		body: 'src\n  blocks\n    render.ts :: every block, one renderer each\n    syntax.ts :: the fence itself\n  markdownItPlugin\n  codeMirrorPlugin\nREADME.md',
+	},
+	buttons: {
+		title: 'Useful links',
+		body: '📖 Manual :: https://joplinapp.org\n⬇️ Download :: https://joplinapp.org/download\n💬 Forum :: https://discourse.joplinapp.org',
+	},
+	art: {
+		title: 'Shipping it',
+		body: '   ___\n  /   \\   every space and blank line\n |  o o|  survives exactly as typed\n  \\___/',
+	},
+	bigtext: {
+		title: '',
+		body: 'BIG TEXT',
+	},
 	keyvalue: {
 		title: 'Environment',
 		body: 'Joplin :: 3.6.15 (desktop)\nPlugin :: 1.0.0\nEditor :: CodeMirror 6\nTheme :: Follows Joplin',

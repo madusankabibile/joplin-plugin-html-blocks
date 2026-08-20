@@ -84,6 +84,15 @@ const HINTS = {
 	},
 	chat: { title: 'Conversation', body: 'Ana :: Did you see the new blocks?\nBo :: Just tried them - they look great.' },
 	badges: { title: '', body: 'typescript, joplin, plugin, markdown' },
+	chart: { title: 'Monthly totals', body: 'Jan :: 12\nFeb :: 28\nMar :: 19\nApr :: 34\nMay :: 25' },
+	flow: { title: 'Pipeline', body: 'Draft :: Write it down\nReview :: Check it over\nShip :: Publish it' },
+	tree: { title: 'Project layout', body: 'src\n  blocks\n    render.ts\n    syntax.ts\n  index.ts\nREADME.md' },
+	buttons: {
+		title: 'Where to go next',
+		body: '📖 Documentation :: https://joplinapp.org\n⬇️ Download :: https://joplinapp.org/download\n💬 Forum :: https://discourse.joplinapp.org',
+	},
+	art: { title: 'ASCII art', body: '  /\\_/\\\n ( o.o )\n  > ^ <' },
+	bigtext: { title: '', body: 'JOPLIN' },
 	quote: { title: 'Author name', body: 'The quoted text goes here.' },
 	details: { title: 'Click to expand', body: 'Hidden contents' },
 	grid: { title: 'Grid title', body: '**Left cell**\n\nContent of the first cell\n---\n**Right cell**\n\nContent of the second cell' },
@@ -708,6 +717,23 @@ const TABLES = [
 	{ id: 'table', label: 'Table', color: 'blue', theme: 'soft' },
 	{ id: 'table_striped', label: 'Table (striped)', color: 'indigo', theme: 'soft', variant: 'striped' },
 	{ id: 'table_minimal', label: 'Table (minimal)', color: 'slate', theme: 'minimal' },
+
+	// Added in 1.1
+	{ id: 'table_bordered', label: 'Table (bordered)', color: 'teal', theme: 'soft', variant: 'bordered' },
+	{ id: 'table_compact', label: 'Table (compact)', color: 'cyan', theme: 'soft', variant: 'compact' },
+	{ id: 'table_solid', label: 'Table (solid header)', color: 'violet', theme: 'solid' },
+	{ id: 'table_outline', label: 'Table (outline)', color: 'emerald', theme: 'outline' },
+	{ id: 'table_elevated', label: 'Table (elevated)', color: 'blue', theme: 'elevated' },
+	{
+		id: 'table_rowhead', label: 'Table (row headings)', color: 'indigo', theme: 'soft', variant: 'rowhead',
+		bodyHint: 'Plan :: Free :: Pro\nPrice :: 0 :: 9\nSeats :: 1 :: 25\nSupport :: Forum :: Email',
+	},
+	{
+		id: 'table_matrix', label: 'Feature matrix', color: 'green', theme: 'soft', variant: 'matrix',
+		aliases: ['matrix'],
+		titleHint: 'What you get',
+		bodyHint: 'Feature :: Free :: Pro\nBlocks :: yes :: yes\nThemes :: partly :: yes\nSupport :: no :: yes',
+	},
 ];
 
 for (const item of TABLES) {
@@ -719,7 +745,8 @@ for (const item of TABLES) {
 		theme: item.theme,
 		variant: item.variant,
 		color: hex(item.color),
-		...hints('table'),
+		aliases: item.aliases,
+		...hints('table', item),
 	});
 }
 
@@ -765,5 +792,260 @@ add({
 	color: hex('slate'),
 	...hints('chat'),
 });
+
+// --------------------------------------------------------------------------
+// Charts
+// --------------------------------------------------------------------------
+// Drawn entirely in CSS, so they render in the viewer, in the picker preview
+// and in a PDF export without a script or an image anywhere.
+
+const SHARE_DATA = 'Chrome :: 62\nFirefox :: 18\nSafari :: 12\nOther :: 8';
+const SERIES_DATA = 'Mon :: 12\nTue :: 19\nWed :: 15\nThu :: 27\nFri :: 34\nSat :: 22\nSun :: 18';
+const DIAL_DATA = 'Storage :: 72%\nMemory :: 45%\nCPU :: 88%';
+
+const CHARTS = [
+	{ id: 'chart_column', label: 'Column chart', chart: 'column', color: 'blue', theme: 'soft', aliases: ['chart', 'bars_vertical'] },
+	{ id: 'chart_column_multi', label: 'Column chart (multi-colour)', chart: 'column', variant: 'multi', color: 'indigo', theme: 'soft' },
+	{ id: 'chart_column_minimal', label: 'Column chart (minimal)', chart: 'column', color: 'slate', theme: 'minimal' },
+	{ id: 'chart_column_elevated', label: 'Column chart (elevated)', chart: 'column', color: 'violet', theme: 'elevated' },
+
+	{ id: 'chart_bar', label: 'Bar chart', chart: 'bar', color: 'teal', theme: 'soft', aliases: ['barchart'] },
+	{ id: 'chart_bar_multi', label: 'Bar chart (multi-colour)', chart: 'bar', variant: 'multi', color: 'purple', theme: 'soft' },
+	{ id: 'chart_bar_minimal', label: 'Bar chart (minimal)', chart: 'bar', color: 'slate', theme: 'minimal' },
+
+	{ id: 'chart_pie', label: 'Pie chart', chart: 'pie', color: 'amber', theme: 'soft', aliases: ['pie'], body: SHARE_DATA, title: 'Browser share' },
+	{ id: 'chart_donut', label: 'Donut chart', chart: 'donut', color: 'cyan', theme: 'soft', aliases: ['donut'], body: SHARE_DATA, title: 'Browser share' },
+	{ id: 'chart_donut_elevated', label: 'Donut chart (elevated)', chart: 'donut', color: 'indigo', theme: 'elevated', body: SHARE_DATA, title: 'Browser share' },
+	{ id: 'chart_stacked', label: 'Stacked bar', chart: 'stack', color: 'violet', theme: 'soft', aliases: ['stacked'], body: SHARE_DATA, title: 'Browser share' },
+
+	{ id: 'chart_line', label: 'Line chart', chart: 'line', color: 'blue', theme: 'soft', aliases: ['graph', 'linechart'], body: SERIES_DATA, title: 'Visitors this week' },
+	{ id: 'chart_area', label: 'Area chart', chart: 'area', color: 'emerald', theme: 'soft', aliases: ['areachart'], body: SERIES_DATA, title: 'Visitors this week' },
+	{ id: 'chart_line_minimal', label: 'Line chart (minimal)', chart: 'line', color: 'slate', theme: 'minimal', body: SERIES_DATA, title: 'Visitors this week' },
+	{ id: 'chart_sparkline', label: 'Sparkline', chart: 'line', variant: 'spark', color: 'rose', theme: 'minimal', aliases: ['sparkline'], body: SERIES_DATA, title: 'Trend' },
+
+	{ id: 'chart_gauge', label: 'Gauges', chart: 'gauge', color: 'green', theme: 'soft', aliases: ['gauge', 'dials'], body: DIAL_DATA, title: 'Capacity' },
+	{ id: 'chart_gauge_multi', label: 'Gauges (multi-colour)', chart: 'gauge', variant: 'multi', color: 'indigo', theme: 'soft', body: DIAL_DATA, title: 'Capacity' },
+	{ id: 'chart_gauge_minimal', label: 'Gauges (minimal)', chart: 'gauge', color: 'slate', theme: 'minimal', body: DIAL_DATA, title: 'Capacity' },
+];
+
+for (const item of CHARTS) {
+	add({
+		id: item.id,
+		label: item.label,
+		category: 'Charts',
+		mode: 'chart',
+		chart: item.chart,
+		theme: item.theme,
+		variant: item.variant,
+		color: hex(item.color),
+		aliases: item.aliases,
+		...hints('chart', {
+			titleHint: item.title,
+			bodyHint: item.body,
+		}),
+	});
+}
+
+// --------------------------------------------------------------------------
+// Diagrams: flows and trees
+// --------------------------------------------------------------------------
+
+const FLOWS = [
+	{ id: 'flow', label: 'Flow chart', color: 'blue', theme: 'soft', aliases: ['pipeline'] },
+	{ id: 'flow_down', label: 'Flow chart (top to bottom)', color: 'indigo', theme: 'soft', variant: 'down' },
+	{ id: 'flow_solid', label: 'Flow chart (solid)', color: 'violet', theme: 'solid' },
+	{ id: 'flow_outline', label: 'Flow chart (outline)', color: 'teal', theme: 'outline' },
+	{ id: 'flow_minimal', label: 'Flow chart (minimal)', color: 'slate', theme: 'minimal' },
+];
+
+for (const item of FLOWS) {
+	add({
+		id: item.id,
+		label: item.label,
+		category: 'Diagrams',
+		mode: 'flow',
+		theme: item.theme,
+		variant: item.variant,
+		color: hex(item.color),
+		aliases: item.aliases,
+		...hints('flow'),
+	});
+}
+
+const TREES = [
+	{ id: 'tree', label: 'Tree / hierarchy', color: 'emerald', theme: 'soft', aliases: ['hierarchy', 'filetree'] },
+	{ id: 'tree_outline', label: 'Tree (outline)', color: 'teal', theme: 'outline' },
+	{ id: 'tree_minimal', label: 'Tree (minimal)', color: 'slate', theme: 'minimal' },
+	{ id: 'tree_terminal', label: 'Tree (terminal)', color: 'dark', theme: 'soft', variant: 'terminal' },
+];
+
+for (const item of TREES) {
+	add({
+		id: item.id,
+		label: item.label,
+		category: 'Diagrams',
+		mode: 'tree',
+		theme: item.theme,
+		variant: item.variant,
+		color: hex(item.color),
+		aliases: item.aliases,
+		...hints('tree'),
+	});
+}
+
+// --------------------------------------------------------------------------
+// Buttons
+// --------------------------------------------------------------------------
+
+const BUTTONS = [
+	{ id: 'buttons', label: 'Button row', color: 'blue', theme: 'soft', aliases: ['links'] },
+	{ id: 'buttons_solid', label: 'Buttons (solid)', color: 'indigo', theme: 'soft', variant: 'solidbtn' },
+	{ id: 'buttons_outline', label: 'Buttons (outline)', color: 'teal', theme: 'soft', variant: 'outlinebtn' },
+	{ id: 'buttons_pill', label: 'Buttons (pill)', color: 'violet', theme: 'soft', variant: 'pill' },
+	{ id: 'buttons_block', label: 'Buttons (full width)', color: 'emerald', theme: 'soft', variant: 'block' },
+	{ id: 'buttons_ghost', label: 'Buttons (ghost)', color: 'slate', theme: 'minimal', variant: 'ghost' },
+	{
+		id: 'buttons_cta', label: 'Call to action', color: 'orange', theme: 'soft', variant: 'cta',
+		title: 'Ready to try it?',
+		body: '⬇️ Download the plugin :: https://joplinapp.org/plugins\n📖 Read the manual :: https://joplinapp.org',
+	},
+];
+
+for (const item of BUTTONS) {
+	add({
+		id: item.id,
+		label: item.label,
+		category: 'Buttons & links',
+		mode: 'buttons',
+		theme: item.theme,
+		variant: item.variant,
+		color: hex(item.color),
+		aliases: item.aliases,
+		...hints('buttons', {
+			titleHint: item.title,
+			bodyHint: item.body,
+		}),
+	});
+}
+
+// --------------------------------------------------------------------------
+// Text art
+// --------------------------------------------------------------------------
+// Two kinds: `art` keeps whatever you typed exactly as you typed it, and
+// `bigtext` spells a line out in five-row block letters.
+
+const ART_CAT = 'ASCII & text art';
+
+const CAT_ART = '  /\\_/\\\n ( o.o )\n  > ^ <';
+const DIAGRAM_ART = '  +---------+      +---------+\n  |  Editor | ---> | Viewer  |\n  +---------+      +---------+';
+
+const ARTS = [
+	{ id: 'ascii_art', label: 'ASCII art', color: 'slate', theme: 'soft', aliases: ['ascii', 'art'], body: CAT_ART },
+	{ id: 'ascii_terminal', label: 'ASCII art (terminal)', color: 'dark', theme: 'soft', variant: 'terminal', title: 'output', body: CAT_ART },
+	{ id: 'ascii_frame', label: 'ASCII art (framed)', color: 'brown', theme: 'soft', variant: 'frame', body: DIAGRAM_ART },
+	{ id: 'ascii_minimal', label: 'ASCII art (minimal)', color: 'gray', theme: 'minimal', body: DIAGRAM_ART },
+	{ id: 'ascii_center', label: 'ASCII art (centred)', color: 'violet', theme: 'soft', variant: 'centerart', body: CAT_ART },
+];
+
+for (const item of ARTS) {
+	add({
+		id: item.id,
+		label: item.label,
+		category: ART_CAT,
+		mode: 'art',
+		theme: item.theme,
+		variant: item.variant,
+		color: hex(item.color),
+		aliases: item.aliases,
+		...hints('art', {
+			titleHint: item.title !== undefined ? item.title : '',
+			bodyHint: item.body,
+		}),
+	});
+}
+
+const BIG_TEXTS = [
+	{ id: 'big_text', label: 'Big text banner', color: 'blue', theme: 'soft', aliases: ['banner_text', 'figlet'] },
+	{ id: 'big_text_solid', label: 'Big text (solid)', color: 'indigo', theme: 'solid' },
+	{ id: 'big_text_gradient', label: 'Big text (gradient)', color: 'violet', theme: 'gradient' },
+	{ id: 'big_text_neon', label: 'Big text (neon)', color: 'fuchsia', theme: 'neon' },
+	{ id: 'big_text_minimal', label: 'Big text (minimal)', color: 'slate', theme: 'minimal' },
+];
+
+for (const item of BIG_TEXTS) {
+	add({
+		id: item.id,
+		label: item.label,
+		category: ART_CAT,
+		mode: 'bigtext',
+		theme: item.theme,
+		color: hex(item.color),
+		aliases: item.aliases,
+		...hints('bigtext'),
+	});
+}
+
+// Display type: ordinary text, drawn large and treated as a graphic.
+const FANCY_TEXTS = [
+	{ id: 'text_gradient', label: 'Gradient headline', color: 'violet', variant: 'gradtext', body: 'Gradient headline' },
+	{ id: 'text_neon', label: 'Neon headline', color: 'fuchsia', variant: 'neontext', body: 'Neon headline' },
+	{ id: 'text_outline', label: 'Outlined headline', color: 'blue', variant: 'outlinetext', body: 'Outlined headline' },
+	{ id: 'text_3d', label: '3D headline', color: 'orange', variant: 'text3d', body: 'Three dimensional' },
+	{ id: 'text_stamp', label: 'Rubber stamp', color: 'red', variant: 'stamp', body: 'APPROVED' },
+	{ id: 'text_spaced', label: 'Spaced caps', color: 'slate', variant: 'spaced', body: 'Quiet confidence' },
+	{ id: 'text_shadow', label: 'Long shadow headline', color: 'teal', variant: 'longshadow', body: 'Long shadow' },
+];
+
+for (const item of FANCY_TEXTS) {
+	add({
+		id: item.id,
+		label: item.label,
+		category: ART_CAT,
+		mode: 'plain',
+		theme: 'soft',
+		variant: item.variant,
+		color: hex(item.color),
+		titleHint: '',
+		bodyHint: item.body,
+	});
+}
+
+// --------------------------------------------------------------------------
+// Animations
+// --------------------------------------------------------------------------
+// Every one of these is switched off again under `prefers-reduced-motion`, so
+// a reader who has asked the system for less movement gets a plain box.
+
+const ANIMATIONS = [
+	{ id: 'anim_fade', label: 'Fade in', animation: 'fade', color: 'blue', body: 'This box fades in when the note is opened.' },
+	{ id: 'anim_slide', label: 'Slide in', animation: 'slide', color: 'indigo', body: 'This box slides in from the left.' },
+	{ id: 'anim_rise', label: 'Rise up', animation: 'rise', color: 'violet', body: 'This box rises into place.' },
+	{ id: 'anim_zoom', label: 'Zoom in', animation: 'zoom', color: 'purple', body: 'This box zooms in.' },
+	{ id: 'anim_flip', label: 'Flip in', animation: 'flip', color: 'cyan', body: 'This box flips into view.' },
+	{ id: 'anim_reveal', label: 'Wipe reveal', animation: 'reveal', color: 'teal', body: 'This box is wiped into view.' },
+	{ id: 'anim_pulse', label: 'Pulse', animation: 'pulse', color: 'rose', body: 'This box keeps a slow pulse.' },
+	{ id: 'anim_bounce', label: 'Bounce', animation: 'bounce', color: 'amber', body: 'This box bounces gently.' },
+	{ id: 'anim_shake', label: 'Shake', animation: 'shake', color: 'red', body: 'This box shakes for attention.' },
+	{ id: 'anim_float', label: 'Float', animation: 'float', color: 'sky', body: 'This box drifts up and down.' },
+	{ id: 'anim_glow', label: 'Glow', animation: 'glow', color: 'emerald', body: 'This box glows on and off.' },
+	{ id: 'anim_gradient', label: 'Moving gradient', animation: 'gradient', color: 'fuchsia', body: 'The background of this box keeps moving.' },
+	{ id: 'anim_blink', label: 'Blinking border', animation: 'blink', color: 'orange', body: 'The border of this box blinks.' },
+	{ id: 'anim_typewriter', label: 'Typewriter', animation: 'type', color: 'green', body: 'Typed out one character at a time.' },
+	{ id: 'anim_marquee', label: 'Scrolling marquee', animation: 'marquee', color: 'brown', body: 'This line scrolls across the block, over and over.' },
+];
+
+for (const item of ANIMATIONS) {
+	add({
+		id: item.id,
+		label: item.label,
+		category: 'Animations',
+		mode: 'plain',
+		theme: 'soft',
+		animation: item.animation,
+		color: hex(item.color),
+		titleHint: item.label,
+		bodyHint: item.body,
+	});
+}
 
 module.exports = { blocks, COLORS, THEMES };

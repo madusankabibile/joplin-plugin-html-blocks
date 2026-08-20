@@ -17,7 +17,8 @@ const outPath = path.join(rootDir, 'src', 'blocks', 'blocks.json');
 const MODES = [
 	'card', 'callout', 'list', 'plain', 'quote', 'details', 'grid', 'steps',
 	'timeline', 'stats', 'badges', 'keyvalue', 'progress', 'rating', 'table',
-	'compare', 'faq', 'feature', 'chat',
+	'compare', 'faq', 'feature', 'chat', 'chart', 'flow', 'tree', 'buttons',
+	'art', 'bigtext',
 ];
 
 const validate = () => {
@@ -50,8 +51,8 @@ const validate = () => {
 /** Key order in the JSON, so diffs stay readable. */
 const FIELD_ORDER = [
 	'id', 'label', 'category', 'mode', 'theme', 'color', 'aliases', 'icon',
-	'defaultTitle', 'variant', 'listStyle', 'ordered', 'columns', 'bare',
-	'open', 'titleHint', 'bodyHint',
+	'defaultTitle', 'variant', 'chart', 'animation', 'listStyle', 'ordered',
+	'columns', 'bare', 'open', 'titleHint', 'bodyHint',
 ];
 
 const clean = block => {

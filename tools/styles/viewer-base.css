@@ -26,6 +26,18 @@
 	 * cells, table stripes. */
 	--jh-inset: var(--jh-bg);
 
+	/* Series colours, for the charts that need to tell slices apart. Fixed
+	 * rather than mixed from --jh-color: a pie chart is only readable if the
+	 * segments differ in hue, not in shade. */
+	--jh-s1: #3b82f6;
+	--jh-s2: #f59e0b;
+	--jh-s3: #10b981;
+	--jh-s4: #8b5cf6;
+	--jh-s5: #ef4444;
+	--jh-s6: #06b6d4;
+	--jh-s7: #ec4899;
+	--jh-s8: #84cc16;
+
 	box-sizing: border-box;
 	margin: 1em 0;
 	color: var(--jh-fg);
@@ -122,6 +134,32 @@
 	font-family: var(--joplin-monospace-font-family, monospace);
 	font-size: 0.72em;
 	font-weight: 500;
+}
+
+/* --- charts, diagrams, buttons, text art ----------------------------------
+   Only the frame lives here, with the other container chrome: the variants
+   below have to be able to repaint it, so this must not out-rank them.
+   ------------------------------------------------------------------------- */
+
+.jhtml-chart,
+.jhtml-flow,
+.jhtml-tree,
+.jhtml-buttons,
+.jhtml-art,
+.jhtml-bigtext {
+	border: 1px solid var(--jh-line);
+	border-radius: 8px;
+	background: var(--jh-tint);
+	padding: 14px 18px;
+}
+
+.jhtml-chart > .jhtml-head,
+.jhtml-flow > .jhtml-head,
+.jhtml-tree > .jhtml-head,
+.jhtml-buttons > .jhtml-head,
+.jhtml-art > .jhtml-head,
+.jhtml-bigtext > .jhtml-head {
+	margin-bottom: 10px;
 }
 
 /* --- plain box variants --------------------------------------------------- */
@@ -1278,6 +1316,842 @@ blockquote.jhtml-v-testimonial::before {
 
 .jhtml-v-square .jhtml-badge {
 	border-radius: 4px;
+}
+
+/* --- charts, diagrams, buttons, text art ---------------------------------- */
+
+/* --- column charts -------------------------------------------------------- */
+
+.jhtml-ch-cols {
+	display: grid;
+	gap: 6px;
+}
+
+/* The bar row and the label row are separate grids of equal tracks, so the two
+ * line up and the axis rule can sit directly under the bars. */
+.jhtml-ch-colplot {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	border-bottom: 2px solid var(--jh-line);
+}
+
+.jhtml-ch-cols .jhtml-ch-axis {
+	gap: 10px;
+}
+
+.jhtml-ch-col {
+	display: flex;
+	flex: 1 1 0;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	min-width: 32px;
+}
+
+.jhtml-ch-col-value {
+	color: var(--jh-muted);
+	font-size: 0.76em;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.jhtml-ch-col-track {
+	display: flex;
+	align-items: flex-end;
+	width: 100%;
+	height: 130px;
+}
+
+.jhtml-ch-col-fill {
+	width: 100%;
+	min-height: 2px;
+	border-radius: 5px 5px 0 0;
+	background: var(--jh-accent);
+}
+
+/* --- bar charts ----------------------------------------------------------- */
+
+.jhtml-ch-barlist {
+	display: grid;
+	gap: 8px;
+}
+
+.jhtml-ch-bar {
+	display: grid;
+	grid-template-columns: minmax(56px, 24%) minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 10px;
+}
+
+.jhtml-ch-bar-label {
+	color: var(--jh-strong);
+	font-size: 0.9em;
+	overflow-wrap: anywhere;
+}
+
+.jhtml-ch-bar-track {
+	height: 14px;
+	border-radius: 999px;
+	background: var(--jh-tint-2);
+	overflow: hidden;
+}
+
+.jhtml-ch-bar-fill {
+	height: 100%;
+	min-width: 2px;
+	border-radius: 999px;
+	background: var(--jh-accent);
+}
+
+.jhtml-ch-bar-value {
+	color: var(--jh-muted);
+	font-size: 0.82em;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+/* --- pie, donut, stacked bar ---------------------------------------------- */
+
+.jhtml-ch-round {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 18px;
+}
+
+.jhtml-ch-disc {
+	flex: 0 0 auto;
+	width: 128px;
+	height: 128px;
+	border-radius: 50%;
+	background: var(--jh-tint-2);
+}
+
+/* The hole is punched with a mask so whatever is behind the block shows
+ * through - a solid inner circle would be the wrong colour on themed blocks. */
+.jhtml-c-donut .jhtml-ch-disc {
+	-webkit-mask-image: radial-gradient(circle, transparent 53%, #000 54%);
+	mask-image: radial-gradient(circle, transparent 53%, #000 54%);
+}
+
+.jhtml-ch-legend {
+	display: grid;
+	flex: 1 1 170px;
+	gap: 5px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.jhtml-ch-key {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.9em;
+}
+
+.jhtml-ch-sw {
+	flex: 0 0 auto;
+	width: 12px;
+	height: 12px;
+	border-radius: 3px;
+}
+
+.jhtml-ch-key-label {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.jhtml-ch-key-value {
+	flex: 0 0 auto;
+	color: var(--jh-muted);
+	font-variant-numeric: tabular-nums;
+}
+
+.jhtml-ch-stacked {
+	display: grid;
+	gap: 10px;
+}
+
+.jhtml-ch-stack {
+	display: flex;
+	height: 22px;
+	border-radius: 999px;
+	background: var(--jh-tint-2);
+	overflow: hidden;
+}
+
+.jhtml-ch-seg {
+	display: block;
+	height: 100%;
+}
+
+.jhtml-ch-stacked .jhtml-ch-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 16px;
+}
+
+.jhtml-ch-stacked .jhtml-ch-key {
+	flex: 0 0 auto;
+}
+
+/* --- gauges --------------------------------------------------------------- */
+
+.jhtml-ch-gauges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px 22px;
+}
+
+.jhtml-ch-gauge {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	min-width: 92px;
+}
+
+.jhtml-ch-dial-wrap {
+	position: relative;
+	width: 92px;
+	height: 92px;
+}
+
+.jhtml-ch-dial {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	-webkit-mask-image: radial-gradient(circle, transparent 61%, #000 62%);
+	mask-image: radial-gradient(circle, transparent 61%, #000 62%);
+}
+
+.jhtml-ch-dial-value {
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 100%;
+	margin-top: -0.7em;
+	color: var(--jh-strong);
+	font-size: 0.95em;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	text-align: center;
+}
+
+.jhtml-ch-gauge-label {
+	color: var(--jh-muted);
+	font-size: 0.85em;
+	text-align: center;
+}
+
+/* --- line and area charts ------------------------------------------------- */
+
+.jhtml-ch-lines {
+	display: grid;
+	gap: 6px;
+}
+
+.jhtml-ch-plot {
+	position: relative;
+	height: 124px;
+	margin: 0 5px;
+	border-bottom: 2px solid var(--jh-line);
+}
+
+.jhtml-ch-area {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(var(--jh-accent), transparent);
+	opacity: 0.32;
+}
+
+.jhtml-ch-line {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: var(--jh-accent);
+}
+
+.jhtml-ch-dot {
+	position: absolute;
+	width: 9px;
+	height: 9px;
+	margin: -4.5px 0 0 -4.5px;
+	border: 2px solid var(--jh-accent);
+	border-radius: 50%;
+	background: var(--jh-bg);
+}
+
+.jhtml-ch-axis {
+	display: flex;
+	gap: 4px;
+	color: var(--jh-muted);
+	font-size: 0.75em;
+}
+
+.jhtml-ch-tick {
+	flex: 1 1 0;
+	min-width: 0;
+	overflow: hidden;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.jhtml-ch-tick:first-child { text-align: left; }
+.jhtml-ch-tick:last-child { text-align: right; }
+
+.jhtml-ch-values {
+	font-variant-numeric: tabular-nums;
+}
+
+/* A sparkline is the same chart with everything but the line taken away. */
+.jhtml-v-spark .jhtml-ch-plot {
+	height: 46px;
+	border-bottom: none;
+}
+
+.jhtml-v-spark .jhtml-ch-dot,
+.jhtml-v-spark .jhtml-ch-axis {
+	display: none;
+}
+
+/* --- flow charts ---------------------------------------------------------- */
+
+.jhtml-flow-track {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	gap: 10px;
+}
+
+.jhtml-flow-node {
+	flex: 1 1 120px;
+	min-width: 104px;
+	padding: 10px 12px;
+	border: 1px solid var(--jh-line);
+	border-radius: 8px;
+	background: var(--jh-inset);
+	text-align: center;
+}
+
+.jhtml-flow-title {
+	color: var(--jh-strong);
+	font-weight: 600;
+}
+
+.jhtml-flow-note {
+	margin-top: 2px;
+	color: var(--jh-muted);
+	font-size: 0.85em;
+}
+
+.jhtml-flow-arrow {
+	flex: 0 0 auto;
+	align-self: center;
+	color: var(--jh-accent);
+	font-size: 1.2em;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.jhtml-flow-arrow::before {
+	content: "\2192";
+}
+
+.jhtml-v-down .jhtml-flow-track {
+	flex-direction: column;
+}
+
+/* Down the page, `flex-basis` would be a height: nodes stay their own size. */
+.jhtml-v-down .jhtml-flow-node {
+	flex: 0 0 auto;
+}
+
+.jhtml-v-down .jhtml-flow-arrow::before {
+	content: "\2193";
+}
+
+/* --- trees ---------------------------------------------------------------- */
+
+.jhtml-tree-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-family: var(--joplin-monospace-font-family, monospace);
+	font-size: 0.92em;
+	overflow-x: auto;
+}
+
+.jhtml-tree-row {
+	display: flex;
+	align-items: baseline;
+	padding: 1px 0;
+	white-space: nowrap;
+}
+
+.jhtml-tree-guide {
+	flex: 0 0 auto;
+	color: var(--jh-accent);
+	opacity: 0.6;
+	white-space: pre;
+}
+
+.jhtml-tree-name {
+	color: var(--jh-strong);
+}
+
+.jhtml-tree-note {
+	margin-left: 12px;
+	color: var(--jh-muted);
+	font-size: 0.92em;
+}
+
+/* --- buttons -------------------------------------------------------------- */
+
+.jhtml-btns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.jhtml-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 8px 14px;
+	border: 1px solid var(--jh-line);
+	border-radius: 8px;
+	background: var(--jh-inset);
+	color: var(--jh-strong);
+	font-size: 0.92em;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.jhtml-btn:hover {
+	background: var(--jh-tint-2);
+	text-decoration: none;
+}
+
+.jhtml-btn-icon {
+	line-height: 1;
+}
+
+.jhtml-btn-note {
+	color: var(--jh-muted);
+	font-size: 0.86em;
+	font-weight: 400;
+}
+
+/* A row that had no usable address: still a button, just not a link. */
+.jhtml-btn-flat {
+	opacity: 0.75;
+}
+
+.jhtml-v-solidbtn .jhtml-btn,
+.jhtml-v-block .jhtml-btn,
+.jhtml-v-cta .jhtml-btn {
+	border-color: var(--jh-color);
+	background: var(--jh-color);
+	color: #ffffff;
+}
+
+.jhtml-v-solidbtn .jhtml-btn:hover,
+.jhtml-v-block .jhtml-btn:hover,
+.jhtml-v-cta .jhtml-btn:hover {
+	background: var(--jh-color);
+	opacity: 0.9;
+}
+
+.jhtml-v-solidbtn .jhtml-btn-note,
+.jhtml-v-block .jhtml-btn-note,
+.jhtml-v-cta .jhtml-btn-note {
+	color: rgba(255, 255, 255, 0.82);
+}
+
+.jhtml-v-outlinebtn .jhtml-btn {
+	border: 2px solid var(--jh-color);
+	background: transparent;
+}
+
+.jhtml-v-pill .jhtml-btn {
+	padding: 8px 18px;
+	border-radius: 999px;
+}
+
+.jhtml-v-block .jhtml-btns {
+	display: grid;
+	gap: 8px;
+}
+
+.jhtml-v-block .jhtml-btn {
+	justify-content: center;
+}
+
+.jhtml-v-ghost .jhtml-btn {
+	padding: 4px 6px;
+	border-color: transparent;
+	background: transparent;
+	color: var(--jh-color);
+}
+
+.jhtml-v-ghost .jhtml-btn:hover {
+	background: transparent;
+	text-decoration: underline;
+}
+
+.jhtml-v-cta {
+	text-align: center;
+}
+
+.jhtml-v-cta > .jhtml-head {
+	justify-content: center;
+	font-size: 1.15em;
+}
+
+.jhtml-v-cta .jhtml-btns {
+	justify-content: center;
+}
+
+.jhtml-v-cta .jhtml-btn {
+	padding: 11px 20px;
+	font-size: 1em;
+}
+
+/* --- ASCII and text art --------------------------------------------------- */
+
+pre.jhtml-art-pre {
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: transparent;
+	color: inherit;
+	font-family: var(--joplin-monospace-font-family, monospace);
+	font-size: 0.92em;
+	line-height: 1.25;
+	overflow-x: auto;
+	white-space: pre;
+	tab-size: 4;
+}
+
+pre.jhtml-art-big {
+	color: var(--jh-strong);
+	font-size: 0.62em;
+	font-weight: 700;
+	line-height: 1;
+	letter-spacing: 0;
+}
+
+.jhtml-t-solid pre.jhtml-bigtext,
+.jhtml-t-gradient pre.jhtml-art-big {
+	color: #ffffff;
+}
+
+.jhtml-t-neon pre.jhtml-art-big {
+	color: var(--jh-color);
+	text-shadow: 0 0 10px var(--jh-color);
+}
+
+.jhtml-v-centerart pre.jhtml-art-pre {
+	width: -moz-fit-content;
+	width: fit-content;
+	margin: 0 auto;
+}
+
+.jhtml-v-terminal pre.jhtml-art-pre {
+	color: #e2e8f0;
+}
+
+.jhtml-v-terminal a {
+	color: #7dd3fc;
+}
+
+/* --- display type --------------------------------------------------------- */
+
+.jhtml-v-gradtext,
+.jhtml-v-neontext,
+.jhtml-v-outlinetext,
+.jhtml-v-text3d,
+.jhtml-v-longshadow,
+.jhtml-v-spaced,
+.jhtml-v-stamp {
+	border: none;
+	background: transparent;
+	padding: 6px 0;
+	text-align: center;
+}
+
+.jhtml-v-gradtext .jhtml-body,
+.jhtml-v-neontext .jhtml-body,
+.jhtml-v-outlinetext .jhtml-body,
+.jhtml-v-text3d .jhtml-body,
+.jhtml-v-longshadow .jhtml-body {
+	font-size: 2.4em;
+	font-weight: 800;
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+}
+
+.jhtml-v-gradtext .jhtml-body {
+	/* Plain fill first: if color-mix is missing the gradient below is dropped,
+	 * and clipped-to-transparent text would otherwise vanish entirely. */
+	background: var(--jh-color);
+	background: linear-gradient(90deg, var(--jh-color), color-mix(in srgb, var(--jh-color) 40%, #ff0080));
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	-webkit-text-fill-color: transparent;
+}
+
+.jhtml-v-neontext .jhtml-body {
+	color: var(--jh-color);
+	text-shadow:
+		0 0 6px var(--jh-color),
+		0 0 18px var(--jh-color),
+		0 0 38px var(--jh-color);
+}
+
+.jhtml-v-outlinetext .jhtml-body {
+	color: transparent;
+	-webkit-text-fill-color: transparent;
+	-webkit-text-stroke: 1.5px var(--jh-color);
+}
+
+.jhtml-v-text3d .jhtml-body {
+	color: var(--jh-color);
+	text-shadow:
+		1px 1px 0 var(--jh-line),
+		2px 2px 0 var(--jh-line),
+		3px 3px 0 var(--jh-line),
+		4px 4px 6px rgba(0, 0, 0, 0.28);
+}
+
+.jhtml-v-longshadow .jhtml-body {
+	color: var(--jh-color);
+	text-shadow: 6px 6px 0 var(--jh-tint-2), 12px 12px 0 var(--jh-tint);
+}
+
+.jhtml-v-spaced .jhtml-body {
+	color: var(--jh-strong);
+	font-size: 1.15em;
+	font-weight: 600;
+	letter-spacing: 0.34em;
+	text-indent: 0.34em;
+	text-transform: uppercase;
+}
+
+.jhtml-v-stamp .jhtml-body {
+	display: inline-block;
+	padding: 6px 18px;
+	border: 4px double var(--jh-color);
+	border-radius: 6px;
+	color: var(--jh-color);
+	font-size: 1.7em;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	opacity: 0.85;
+	transform: rotate(-7deg);
+}
+
+/* --- table variants ------------------------------------------------------- */
+
+.jhtml-v-bordered table.jhtml-table th,
+.jhtml-v-bordered table.jhtml-table td {
+	border: 1px solid var(--jh-line);
+}
+
+.jhtml-v-compact table.jhtml-table {
+	font-size: 0.88em;
+}
+
+.jhtml-v-compact table.jhtml-table th,
+.jhtml-v-compact table.jhtml-table td {
+	padding: 4px 8px;
+}
+
+.jhtml-v-rowhead table.jhtml-table tbody td:first-child,
+.jhtml-v-matrix table.jhtml-table tbody td:first-child {
+	background: var(--jh-tint);
+	color: var(--jh-strong);
+	font-weight: 600;
+}
+
+.jhtml-v-matrix table.jhtml-table tbody td:not(:first-child) {
+	text-align: center;
+}
+
+.jhtml-mark {
+	font-weight: 700;
+}
+
+.jhtml-mark-yes { color: #16a34a; }
+.jhtml-mark-no { color: #dc2626; }
+.jhtml-mark-part { color: #d97706; }
+
+/* --- animations -----------------------------------------------------------
+   Presets, applied as `jhtml-anim-*`. Anything that keeps moving is stopped
+   again for readers who have asked the system for reduced motion.
+   ------------------------------------------------------------------------- */
+
+@keyframes jhtml-fade { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes jhtml-slide {
+	from { opacity: 0; transform: translateX(-26px); }
+	to { opacity: 1; transform: none; }
+}
+
+@keyframes jhtml-rise {
+	from { opacity: 0; transform: translateY(18px); }
+	to { opacity: 1; transform: none; }
+}
+
+@keyframes jhtml-zoom {
+	from { opacity: 0; transform: scale(0.9); }
+	to { opacity: 1; transform: none; }
+}
+
+@keyframes jhtml-flip {
+	from { opacity: 0; transform: perspective(700px) rotateX(-75deg); }
+	to { opacity: 1; transform: none; }
+}
+
+@keyframes jhtml-reveal {
+	from { clip-path: inset(0 100% 0 0); }
+	to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes jhtml-pulse {
+	0%, 100% { transform: scale(1); }
+	50% { transform: scale(1.02); }
+}
+
+@keyframes jhtml-bounce {
+	0%, 100% { transform: translateY(0); }
+	40% { transform: translateY(-7px); }
+	60% { transform: translateY(-3px); }
+}
+
+@keyframes jhtml-shake {
+	0%, 100% { transform: translateX(0); }
+	20%, 60% { transform: translateX(-5px); }
+	40%, 80% { transform: translateX(5px); }
+}
+
+@keyframes jhtml-float {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(-8px); }
+}
+
+@keyframes jhtml-glow {
+	0%, 100% { box-shadow: 0 0 0 0 transparent; }
+	50% { box-shadow: 0 0 18px -2px var(--jh-color); }
+}
+
+@keyframes jhtml-gradient {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
+@keyframes jhtml-blink {
+	0%, 100% { border-color: var(--jh-color); }
+	50% { border-color: transparent; }
+}
+
+@keyframes jhtml-type {
+	from { width: 0; }
+	to { width: 100%; }
+}
+
+@keyframes jhtml-caret {
+	0%, 100% { border-right-color: var(--jh-color); }
+	50% { border-right-color: transparent; }
+}
+
+@keyframes jhtml-marquee {
+	from { transform: translateX(100%); }
+	to { transform: translateX(-100%); }
+}
+
+.jhtml-anim-fade { animation: jhtml-fade 0.7s ease both; }
+.jhtml-anim-slide { animation: jhtml-slide 0.6s ease both; }
+.jhtml-anim-rise { animation: jhtml-rise 0.6s ease both; }
+.jhtml-anim-zoom { animation: jhtml-zoom 0.5s ease both; }
+.jhtml-anim-flip { animation: jhtml-flip 0.7s ease both; transform-origin: top center; }
+.jhtml-anim-reveal { animation: jhtml-reveal 0.9s ease both; }
+.jhtml-anim-pulse { animation: jhtml-pulse 2.4s ease-in-out infinite; }
+.jhtml-anim-bounce { animation: jhtml-bounce 2s ease-in-out infinite; }
+.jhtml-anim-shake { animation: jhtml-shake 2.6s ease-in-out infinite; }
+.jhtml-anim-float { animation: jhtml-float 3.4s ease-in-out infinite; }
+.jhtml-anim-glow { animation: jhtml-glow 2.6s ease-in-out infinite; }
+.jhtml-anim-blink { animation: jhtml-blink 1.4s step-end infinite; }
+
+.jhtml-anim-gradient {
+	border-color: transparent;
+	background: linear-gradient(
+		110deg,
+		var(--jh-tint) 0%,
+		var(--jh-tint-2) 35%,
+		var(--jh-tint) 70%,
+		var(--jh-tint-2) 100%
+	);
+	background-size: 300% 100%;
+	animation: jhtml-gradient 7s ease infinite;
+}
+
+/* One line, typed out, with a caret parked at the end of it. */
+.jhtml-anim-type .jhtml-body {
+	display: inline-block;
+	max-width: 100%;
+	border-right: 2px solid var(--jh-color);
+	overflow: hidden;
+	white-space: nowrap;
+	vertical-align: bottom;
+	animation: jhtml-type 3s steps(40, end) both, jhtml-caret 0.8s step-end infinite;
+}
+
+.jhtml-anim-type .jhtml-body p {
+	margin: 0;
+	white-space: nowrap;
+}
+
+.jhtml-anim-marquee {
+	overflow: hidden;
+}
+
+.jhtml-anim-marquee .jhtml-body {
+	white-space: nowrap;
+	animation: jhtml-marquee 14s linear infinite;
+}
+
+.jhtml-anim-marquee .jhtml-body p {
+	margin: 0;
+	white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.jhtml[class*="jhtml-anim-"],
+	.jhtml[class*="jhtml-anim-"] .jhtml-body {
+		animation: none !important;
+		clip-path: none;
+		opacity: 1;
+		transform: none;
+		white-space: normal;
+	}
+
+	.jhtml-anim-type .jhtml-body {
+		border-right: none;
+	}
 }
 
 /* --- themes ---------------------------------------------------------------

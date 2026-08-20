@@ -12,10 +12,16 @@ Card contents, with the usual **markdown** you'd expect.
 ```
 
 ...renders as a light blue card in the note viewer, in exported HTML and in PDF
-exports. 298 block types are included, in 28 categories: cards in eleven styles,
+exports. 371 block types are included, in 33 categories: cards in eleven styles,
 admonition-style callouts, twenty-two list styles, steps, timelines, stat tiles,
 progress bars, ratings, tables, pros and cons, FAQs, feature grids, chat
-transcripts, grids, banners, collapsible sections and more.
+transcripts, grids, banners, collapsible sections - plus charts (columns, bars,
+pie, donut, line, area, gauges), flow charts and trees, button rows, ASCII and
+big-text art, and a set of CSS animations.
+
+Charts and diagrams are drawn in plain CSS - no script, no images, no external
+libraries - so they render the same in the viewer, in the picker preview and in
+a PDF export, and they follow your Joplin theme like everything else.
 
 ## Screenshots
 
@@ -66,8 +72,9 @@ what Joplin actually draws.
 
 Most blocks treat their contents as ordinary markdown. The list-like ones
 (`list_*`, `steps`, `timeline`, `stats`, `progress`, `rating`, `keyvalue`,
-`table`, `pros_cons`, `faq_*`, `features_*`, `chat`, `badges`) treat **one line
-as one item** instead, and split fields on `::`:
+`table_*`, `pros_cons`, `faq_*`, `features_*`, `chat`, `badges`, `chart_*`,
+`flow*`, `tree*`, `buttons*`) treat **one line as one item** instead, and split
+fields on `::`:
 
 ```
 !!! steps How it works
@@ -149,7 +156,12 @@ pairs each one with its markdown. The categories are:
 | Quotes | 5 | `quote_box`, `quote_pull`, `quote_card` |
 | Collapsible | 7 | `details`, `details_open`, `faq_list` |
 | Badges & tags | 5 | `badges`, `badges_tags`, `badges_square` |
-| Tables & data | 11 | `keyvalue`, `table`, `pros_cons` |
+| Tables & data | 18 | `keyvalue`, `table`, `table_matrix` |
+| Charts | 18 | `chart_column`, `chart_pie`, `chart_line` |
+| Diagrams | 9 | `flow`, `flow_down`, `tree` |
+| Buttons & links | 7 | `buttons`, `buttons_pill`, `buttons_cta` |
+| ASCII & text art | 17 | `ascii_art`, `big_text`, `text_gradient` |
+| Animations | 15 | `anim_fade`, `anim_typewriter`, `anim_marquee` |
 
 Most ids read the way they look: `<family>_<theme>_<colour>`. The short,
 memorable ones are aliased - `info`, `tip`, `warning`, `note`, `quote`,
@@ -173,6 +185,13 @@ memorable ones are aliased - `info`, `tip`, `warning`, `note`, `quote`,
 | `badges` | split on commas and newlines |
 | `list_*` | one item per line; `[x]` / `[ ]` for checkboxes, two spaces to nest |
 | `grid_*`, `columns_*` | markdown cells split on a `---` line |
+| `chart_*` | `label :: value` - `1,200`, `1.2k`, `85%` and `7/10` all read as numbers |
+| `flow*` | `node :: caption` - one node per line, arrows drawn between them |
+| `tree*` | one entry per line, two spaces to nest, `name :: note` |
+| `buttons*` | `label :: https://... :: note`; a leading emoji becomes the icon |
+| `table_matrix` | `yes` / `no` / `partly` in a cell become a tick, a cross or a tilde |
+| `ascii_*` | kept exactly as typed - every space and blank line survives |
+| `big_text` | one line of text per banner, spelled out in block letters |
 
 ## Editor highlighting
 
@@ -222,12 +241,17 @@ around it looks like). The two are independent - any theme works on any mode:
 
 * `mode`: `card`, `callout`, `plain`, `quote`, `details`, `grid`, `list`,
   `steps`, `timeline`, `stats`, `progress`, `rating`, `badges`, `keyvalue`,
-  `table`, `compare`, `faq`, `feature`, `chat`.
+  `table`, `compare`, `faq`, `feature`, `chat`, `chart`, `flow`, `tree`,
+  `buttons`, `art`, `bigtext`.
 * `theme`: `soft` (the default), `solid`, `outline`, `gradient`, `elevated`,
   `glass`, `neon`, `minimal`, `ribbon`, `dashed`, `underline`.
 
-The remaining fields (`icon`, `defaultTitle`, `variant`, `listStyle`, `ordered`,
-`columns`, `bare`, `open`, `aliases`) are documented in `src/blocks/types.ts`.
+The remaining fields (`icon`, `defaultTitle`, `variant`, `chart`, `animation`,
+`listStyle`, `ordered`, `columns`, `bare`, `open`, `aliases`) are documented in
+`src/blocks/types.ts`. `chart` picks which chart a `chart` block draws (`column`,
+`bar`, `pie`, `donut`, `line`, `area`, `gauge`, `stack`) and `animation` adds one
+of the motion presets - all of which switch themselves off again for readers with
+`prefers-reduced-motion` set.
 
 ## Building
 

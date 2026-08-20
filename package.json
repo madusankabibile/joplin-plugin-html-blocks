@@ -1,6 +1,6 @@
 {
   "name": "joplin-plugin-html-blocks",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Write styled HTML sections - cards, callouts, fancy lists, steps, timelines, grids and more - using a simple `!!! type` ... `!!!->` markdown fence.",
   "author": "madusanka",
   "scripts": {

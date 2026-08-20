@@ -11,6 +11,7 @@
 
 import { BlockDefinition } from './types';
 import { splitFields } from './syntax';
+import { bannerLines } from './asciiFont';
 
 export interface BlockMeta {
 	def: BlockDefinition | null;
@@ -47,6 +48,8 @@ export const classesFor = (meta: BlockMeta): string => {
 		out.push(`jhtml-b-${def.id}`);
 		out.push(`jhtml-t-${def.theme || 'soft'}`);
 		if (def.variant) out.push(`jhtml-v-${def.variant}`);
+		if (def.chart) out.push(`jhtml-c-${def.chart}`);
+		if (def.animation) out.push(`jhtml-anim-${def.animation}`);
 		if (def.listStyle) out.push(`jhtml-ls-${def.listStyle}`);
 		if (def.columns) out.push(`jhtml-cols-${def.columns}`);
 		if (def.bare) out.push('jhtml-bare');
@@ -390,12 +393,35 @@ const keyValueHtml = (meta: BlockMeta, content: string, inline: InlineRenderer):
 	return `${wrapperOpen(meta)}${headHtml(meta, inline)}<div class="jhtml-kv-items">${items}</div></div>`;
 };
 
+/**
+ * `yes` / `no` / `partly`, however they were written, as a tick or a cross.
+ * Only used by the matrix variant, where a column of ticks is the whole point.
+ */
+const MATRIX_MARKS: Record<string, [string, string]> = {
+	yes: ['✓', 'yes'], y: ['✓', 'yes'], true: ['✓', 'yes'],
+	'✓': ['✓', 'yes'], '✔': ['✓', 'yes'], '+': ['✓', 'yes'],
+	no: ['✕', 'no'], n: ['✕', 'no'], false: ['✕', 'no'],
+	'✗': ['✕', 'no'], '✘': ['✕', 'no'], '-': ['✕', 'no'],
+	'–': ['✕', 'no'], partly: ['~', 'part'], partial: ['~', 'part'],
+	some: ['~', 'part'], '~': ['~', 'part'],
+};
+
+const matrixCell = (field: string, inline: InlineRenderer): string => {
+	const mark = MATRIX_MARKS[field.trim().toLowerCase()];
+	if (!mark) return inline(field);
+	return `<span class="jhtml-mark jhtml-mark-${mark[1]}">${mark[0]}</span>`;
+};
+
 const tableHtml = (meta: BlockMeta, content: string, inline: InlineRenderer): string => {
 	const lines = contentLines(content);
 	if (!lines.length) return `${wrapperOpen(meta)}${headHtml(meta, inline)}</div>`;
 
+	const matrix = meta.def && meta.def.variant === 'matrix';
+	const cell = (field: string, tag: string): string =>
+		(tag === 'td' && matrix ? matrixCell(field, inline) : inline(field));
+
 	const cells = (line: string, tag: string): string => splitFields(line)
-		.map(field => `<${tag}>${inline(field)}</${tag}>`)
+		.map(field => `<${tag}>${cell(field, tag)}</${tag}>`)
 		.join('');
 
 	const head = `<thead><tr>${cells(lines[0], 'th')}</tr></thead>`;
@@ -513,6 +539,409 @@ const chatHtml = (meta: BlockMeta, content: string, inline: InlineRenderer): str
 	return `${wrapperOpen(meta)}${headHtml(meta, inline)}<div class="jhtml-chat">${items}</div></div>`;
 };
 
+// --------------------------------------------------------------------------
+// Charts
+// --------------------------------------------------------------------------
+// Everything below is drawn with ordinary CSS - percentages, conic gradients
+// and clip paths. No SVG and no script, so a chart survives the note viewer,
+// the picker preview and a PDF export in exactly the same shape.
+
+/** How many series colours the stylesheet defines (`--jh-s1` ... `--jh-s8`). */
+const SERIES_COLORS = 8;
+
+const seriesColor = (index: number): string => `var(--jh-s${(index % SERIES_COLORS) + 1})`;
+
+/**
+ * Reads `42`, `1,200`, `85%`, `1.2k` or `3M` as a number. Anything unreadable
+ * counts as zero rather than throwing the whole chart out of scale.
+ */
+const asNumber = (raw: string): number => {
+	const match = /^[^\d+-]*([+-]?[\d,]*\.?\d+)\s*([kmb])?/i.exec(String(raw).trim());
+	if (!match) return 0;
+
+	const value = parseFloat(match[1].replace(/,/g, ''));
+	if (!isFinite(value)) return 0;
+
+	switch ((match[2] || '').toLowerCase()) {
+	case 'k': return value * 1e3;
+	case 'm': return value * 1e6;
+	case 'b': return value * 1e9;
+	default: return value;
+	}
+};
+
+const hasDigits = (text: string): boolean => /\d/.test(text);
+
+/** A percentage, clamped and rounded, safe to drop straight into a style. */
+const cssPercent = (value: number): string => {
+	if (!isFinite(value)) return '0';
+	return Math.max(0, Math.min(100, value)).toFixed(1);
+};
+
+interface DataRow {
+	label: string;
+	value: number;
+	/** The value as it was typed, which is what gets shown. */
+	text: string;
+}
+
+/**
+ * One `label :: value` row per line. `value :: label` is accepted too - people
+ * who already know the `stats` block write it that way round. Anything after
+ * the value is ignored, so a note in a third field does no harm.
+ */
+const dataRows = (content: string): DataRow[] => contentLines(content).map(line => {
+	const fields = splitFields(line);
+	let label = fields[0] || '';
+	let raw = fields[1] || '';
+
+	if (fields.length > 1 && hasDigits(label) && !hasDigits(raw)) {
+		const swap = label;
+		label = raw;
+		raw = swap;
+	}
+
+	return { label, value: asNumber(raw), text: raw.trim() };
+});
+
+const chartFrame = (
+	meta: BlockMeta,
+	inline: InlineRenderer,
+	inner: string,
+	extraClass = '',
+): string =>
+	`${wrapperOpen(meta)}${headHtml(meta, inline)}` +
+	`<div class="jhtml-ch${extraClass ? ` ${extraClass}` : ''}">${inner}</div></div>`;
+
+const columnChart = (meta: BlockMeta, rows: DataRow[], inline: InlineRenderer): string => {
+	const max = rows.reduce((top, row) => Math.max(top, row.value), 0);
+	const multi = meta.def.variant === 'multi';
+
+	// The bars and their labels are two rows rather than one column each, so the
+	// baseline can be drawn under the bars instead of under the writing.
+	const columns = rows.map((row, index) => {
+		const height = max > 0 ? (row.value / max) * 100 : 0;
+		const color = multi ? `;background:${seriesColor(index)}` : '';
+
+		return '<div class="jhtml-ch-col">' +
+			`<div class="jhtml-ch-col-value">${escapeHtml(row.text)}</div>` +
+			'<div class="jhtml-ch-col-track">' +
+			`<div class="jhtml-ch-col-fill" style="height:${cssPercent(height)}%${color}"></div>` +
+			'</div></div>';
+	}).join('');
+
+	const labels = rows
+		.map(row => `<span class="jhtml-ch-tick">${inline(row.label)}</span>`)
+		.join('');
+
+	return chartFrame(
+		meta,
+		inline,
+		`<div class="jhtml-ch-colplot">${columns}</div><div class="jhtml-ch-axis">${labels}</div>`,
+		'jhtml-ch-cols',
+	);
+};
+
+const barChart = (meta: BlockMeta, rows: DataRow[], inline: InlineRenderer): string => {
+	const max = rows.reduce((top, row) => Math.max(top, row.value), 0);
+	const multi = meta.def.variant === 'multi';
+
+	const bars = rows.map((row, index) => {
+		const width = max > 0 ? (row.value / max) * 100 : 0;
+		const color = multi ? `;background:${seriesColor(index)}` : '';
+
+		return '<div class="jhtml-ch-bar">' +
+			`<div class="jhtml-ch-bar-label">${inline(row.label)}</div>` +
+			'<div class="jhtml-ch-bar-track">' +
+			`<div class="jhtml-ch-bar-fill" style="width:${cssPercent(width)}%${color}"></div>` +
+			'</div>' +
+			`<div class="jhtml-ch-bar-value">${escapeHtml(row.text)}</div>` +
+			'</div>';
+	}).join('');
+
+	return chartFrame(meta, inline, bars, 'jhtml-ch-barlist');
+};
+
+/** Shares of the total, as percentages that always add up to 100. */
+const shares = (rows: DataRow[]): number[] => {
+	const total = rows.reduce((sum, row) => sum + Math.max(0, row.value), 0);
+	if (total <= 0) return rows.map(() => 100 / Math.max(1, rows.length));
+	return rows.map(row => (Math.max(0, row.value) / total) * 100);
+};
+
+const legendHtml = (rows: DataRow[], parts: number[], inline: InlineRenderer): string => {
+	const items = rows.map((row, index) => '<li class="jhtml-ch-key">' +
+		`<span class="jhtml-ch-sw" style="background:${seriesColor(index)}"></span>` +
+		`<span class="jhtml-ch-key-label">${inline(row.label)}</span>` +
+		`<span class="jhtml-ch-key-value">${escapeHtml(row.text || `${parts[index].toFixed(0)}%`)}</span>` +
+		'</li>').join('');
+
+	return `<ul class="jhtml-ch-legend">${items}</ul>`;
+};
+
+const pieChart = (meta: BlockMeta, rows: DataRow[], inline: InlineRenderer): string => {
+	const parts = shares(rows);
+
+	let cursor = 0;
+	const stops = rows.map((_row, index) => {
+		const from = cursor;
+		cursor += parts[index];
+		const to = index === rows.length - 1 ? 100 : cursor;
+		return `${seriesColor(index)} ${from.toFixed(2)}% ${to.toFixed(2)}%`;
+	}).join(',');
+
+	const disc = rows.length
+		? `<div class="jhtml-ch-disc" style="background:conic-gradient(${stops})"></div>`
+		: '<div class="jhtml-ch-disc"></div>';
+
+	return chartFrame(meta, inline, disc + legendHtml(rows, parts, inline), 'jhtml-ch-round');
+};
+
+const stackChart = (meta: BlockMeta, rows: DataRow[], inline: InlineRenderer): string => {
+	const parts = shares(rows);
+
+	const segments = rows.map((row, index) => {
+		const title = `${row.label} ${row.text}`.trim();
+		return `<span class="jhtml-ch-seg" style="width:${cssPercent(parts[index])}%;` +
+			`background:${seriesColor(index)}" title="${escapeHtml(title)}"></span>`;
+	}).join('');
+
+	return chartFrame(
+		meta,
+		inline,
+		`<div class="jhtml-ch-stack">${segments}</div>${legendHtml(rows, parts, inline)}`,
+		'jhtml-ch-stacked',
+	);
+};
+
+const gaugeChart = (meta: BlockMeta, rows: DataRow[], inline: InlineRenderer): string => {
+	const dials = rows.map((row, index) => {
+		// A gauge is a proportion: `70`, `70%` and `7/10` all mean the same thing.
+		const fraction = /^([\d.]+)\s*\/\s*([\d.]+)$/.exec(row.text);
+		const percent = fraction
+			? (asNumber(fraction[2]) > 0 ? (asNumber(fraction[1]) / asNumber(fraction[2])) * 100 : 0)
+			: row.value;
+		const filled = cssPercent(percent);
+		const shown = row.text || `${filled}%`;
+		const color = meta.def.variant === 'multi' ? seriesColor(index) : 'var(--jh-accent)';
+
+		// The ring is masked into a doughnut, and a mask takes the element's
+		// children with it - so the reading sits next to the dial, not inside it.
+		return '<div class="jhtml-ch-gauge">' +
+			'<div class="jhtml-ch-dial-wrap">' +
+			`<div class="jhtml-ch-dial" style="background:conic-gradient(${color} 0 ${filled}%,` +
+			` var(--jh-tint-2) ${filled}% 100%)"></div>` +
+			`<span class="jhtml-ch-dial-value">${escapeHtml(shown)}</span>` +
+			'</div>' +
+			`<div class="jhtml-ch-gauge-label">${inline(row.label)}</div>` +
+			'</div>';
+	}).join('');
+
+	return chartFrame(meta, inline, dials, 'jhtml-ch-gauges');
+};
+
+/** Half the vertical thickness of a plotted line, in percent of the plot. */
+const LINE_THICKNESS = 1.6;
+
+const lineChart = (meta: BlockMeta, rows: DataRow[], inline: InlineRenderer): string => {
+	const area = meta.def.chart === 'area';
+	const max = rows.reduce((top, row) => Math.max(top, row.value), 0);
+
+	const at = (index: number): { x: number; y: number } => ({
+		x: rows.length < 2 ? 50 : (index / (rows.length - 1)) * 100,
+		y: max > 0 ? 100 - (rows[index].value / max) * 100 : 100,
+	});
+
+	const points = rows.map((_row, index) => at(index));
+
+	const corner = (point: { x: number; y: number }, offset: number): string =>
+		`${point.x.toFixed(2)}% ${cssPercent(point.y + offset)}%`;
+
+	const shape = (offset: number): string => points.map(point => corner(point, offset)).join(',');
+
+	// The "line" is a band: the points traced left to right, then back again a
+	// hair lower. One polygon, and no SVG needed to draw a stroke.
+	const back = points.slice().reverse().map(point => corner(point, LINE_THICKNESS)).join(',');
+	const band = points.length ? `polygon(${shape(-LINE_THICKNESS)},${back})` : 'none';
+
+	const fill = points.length
+		? `polygon(${points[0].x.toFixed(2)}% 100%,${shape(0)},${points[points.length - 1].x.toFixed(2)}% 100%)`
+		: 'none';
+
+	const dots = points.map((point, index) => {
+		const title = `${rows[index].label} ${rows[index].text}`.trim();
+		return `<span class="jhtml-ch-dot" style="left:${point.x.toFixed(2)}%;top:${cssPercent(point.y)}%"` +
+			` title="${escapeHtml(title)}"></span>`;
+	}).join('');
+
+	const labels = rows.map(row => `<span class="jhtml-ch-tick">${inline(row.label)}</span>`).join('');
+	const values = rows.map(row => `<span class="jhtml-ch-tick">${escapeHtml(row.text)}</span>`).join('');
+
+	// With nothing to plot there is no polygon to clip to, and an unclipped
+	// line would paint the whole plot area - so it is left out entirely.
+	const plot = '<div class="jhtml-ch-plot">' +
+		(points.length
+			? (area ? `<div class="jhtml-ch-area" style="clip-path:${fill};-webkit-clip-path:${fill}"></div>` : '') +
+				`<div class="jhtml-ch-line" style="clip-path:${band};-webkit-clip-path:${band}"></div>` + dots
+			: '') +
+		'</div>';
+
+	return chartFrame(
+		meta,
+		inline,
+		`<div class="jhtml-ch-axis jhtml-ch-values">${values}</div>${plot}` +
+		`<div class="jhtml-ch-axis">${labels}</div>`,
+		'jhtml-ch-lines',
+	);
+};
+
+const chartHtml = (meta: BlockMeta, content: string, inline: InlineRenderer): string => {
+	const rows = dataRows(content);
+
+	switch (meta.def.chart) {
+	case 'bar': return barChart(meta, rows, inline);
+	case 'pie':
+	case 'donut': return pieChart(meta, rows, inline);
+	case 'stack': return stackChart(meta, rows, inline);
+	case 'gauge': return gaugeChart(meta, rows, inline);
+	case 'line':
+	case 'area': return lineChart(meta, rows, inline);
+	default: return columnChart(meta, rows, inline);
+	}
+};
+
+// --------------------------------------------------------------------------
+// Graphs: flows and trees
+// --------------------------------------------------------------------------
+
+const flowHtml = (meta: BlockMeta, content: string, inline: InlineRenderer): string => {
+	const nodes = contentLines(content).map((line, index) => {
+		const fields = splitFields(line);
+		const title = fields[0] || '';
+		const note = fields.slice(1).join(' :: ');
+
+		const arrow = index ? '<span class="jhtml-flow-arrow" aria-hidden="true"></span>' : '';
+
+		return `${arrow}<div class="jhtml-flow-node">` +
+			`<div class="jhtml-flow-title">${inline(title)}</div>` +
+			(note ? `<div class="jhtml-flow-note">${inline(note)}</div>` : '') +
+			'</div>';
+	}).join('');
+
+	return `${wrapperOpen(meta)}${headHtml(meta, inline)}` +
+		`<div class="jhtml-flow-track">${nodes}</div></div>`;
+};
+
+/** The deepest indent a tree draws; anything further in is clamped. */
+const MAX_TREE_LEVEL = 6;
+
+const treeHtml = (meta: BlockMeta, content: string, inline: InlineRenderer): string => {
+	const items = content.split('\n')
+		.filter(line => line.trim() !== '')
+		.map(line => {
+			const indent = (/^[ \t]*/.exec(line))[0].replace(/\t/g, '  ').length;
+			const fields = splitFields(line.trim().replace(/^[-*+]\s+/, ''));
+
+			return {
+				level: Math.min(MAX_TREE_LEVEL, Math.floor(indent / 2)),
+				name: fields[0] || '',
+				note: fields.slice(1).join(' :: '),
+			};
+		});
+
+	/** True when another item at exactly `level` follows before the branch ends. */
+	const continues = (from: number, level: number): boolean => {
+		for (let index = from + 1; index < items.length; index++) {
+			if (items[index].level < level) return false;
+			if (items[index].level === level) return true;
+		}
+		return false;
+	};
+
+	const rows = items.map((item, index) => {
+		let guides = '';
+		for (let level = 0; level < item.level; level++) {
+			guides += continues(index, level) ? '│  ' : '   ';
+		}
+
+		const branch = item.level
+			? `${continues(index, item.level) ? '├' : '└'}─ `
+			: '';
+
+		return '<li class="jhtml-tree-row">' +
+			`<span class="jhtml-tree-guide">${escapeHtml(guides + branch)}</span>` +
+			`<span class="jhtml-tree-name">${inline(item.name)}</span>` +
+			(item.note ? `<span class="jhtml-tree-note">${inline(item.note)}</span>` : '') +
+			'</li>';
+	}).join('');
+
+	return `${wrapperOpen(meta)}${headHtml(meta, inline)}` +
+		`<ul class="jhtml-tree-list">${rows}</ul></div>`;
+};
+
+// --------------------------------------------------------------------------
+// Buttons
+// --------------------------------------------------------------------------
+
+/**
+ * Only links that go somewhere sensible become real links: web addresses, mail,
+ * an in-note anchor, or a Joplin note id (`:/<32 hex>`). Anything else - and in
+ * particular anything script-shaped - is drawn as a dead button instead.
+ */
+const linkTarget = (raw: string): string => {
+	const url = String(raw).trim();
+	if (!url) return '';
+	if (/[\s"'<>`]/.test(url)) return '';
+	if (/^(?:https?:\/\/|mailto:|tel:|joplin:\/\/|#|\/|\.{0,2}\/)/i.test(url)) return url;
+	if (/^:\/[0-9a-f]{32}$/i.test(url)) return url;
+	if (/^[\w.+-]+@[\w-]+\.[\w.-]+$/.test(url)) return `mailto:${url}`;
+	return '';
+};
+
+const buttonsHtml = (meta: BlockMeta, content: string, inline: InlineRenderer): string => {
+	const items = contentLines(content).map(line => {
+		const fields = splitFields(line);
+		const { icon, rest } = splitIcon(fields[0] || '');
+		const href = linkTarget(fields[1] || '');
+		const note = fields.slice(2).join(' :: ');
+
+		const label = `${icon ? `<span class="jhtml-btn-icon">${escapeHtml(icon)}</span>` : ''}` +
+			`<span class="jhtml-btn-label">${inline(rest)}</span>` +
+			(note ? `<span class="jhtml-btn-note">${inline(note)}</span>` : '');
+
+		return href
+			? `<a class="jhtml-btn" href="${escapeHtml(href)}">${label}</a>`
+			: `<span class="jhtml-btn jhtml-btn-flat">${label}</span>`;
+	}).join('');
+
+	return `${wrapperOpen(meta)}${headHtml(meta, inline)}` +
+		`<div class="jhtml-btns">${items}</div></div>`;
+};
+
+// --------------------------------------------------------------------------
+// Text art
+// --------------------------------------------------------------------------
+
+const artHtml = (meta: BlockMeta, content: string, inline: InlineRenderer): string => {
+	// Blank lines and leading spaces are the whole point here, so the content is
+	// taken exactly as typed - only the trailing newlines go.
+	const text = content.replace(/[\r\n\s]+$/, '');
+
+	return `${wrapperOpen(meta)}${headHtml(meta, inline)}` +
+		`<pre class="jhtml-art-pre">${escapeHtml(text)}</pre></div>`;
+};
+
+const bigTextHtml = (meta: BlockMeta, content: string, inline: InlineRenderer): string => {
+	const banners = content.split('\n')
+		.map(line => bannerLines(line))
+		.filter(rows => rows.length)
+		.map(rows => escapeHtml(rows.join('\n')))
+		.join('\n\n');
+
+	return `${wrapperOpen(meta)}${headHtml(meta, inline)}` +
+		`<pre class="jhtml-art-pre jhtml-art-big">${banners}</pre></div>`;
+};
+
 /** Renders the line-based modes - everything `isMarkdownMode` says no to. */
 export const rawHtml = (meta: BlockMeta, content: string, inline: InlineRenderer): string => {
 	switch (meta.def.mode) {
@@ -529,6 +958,12 @@ export const rawHtml = (meta: BlockMeta, content: string, inline: InlineRenderer
 	case 'faq': return faqHtml(meta, content, inline);
 	case 'feature': return featureHtml(meta, content, inline);
 	case 'chat': return chatHtml(meta, content, inline);
+	case 'chart': return chartHtml(meta, content, inline);
+	case 'flow': return flowHtml(meta, content, inline);
+	case 'tree': return treeHtml(meta, content, inline);
+	case 'buttons': return buttonsHtml(meta, content, inline);
+	case 'art': return artHtml(meta, content, inline);
+	case 'bigtext': return bigTextHtml(meta, content, inline);
 	default:
 		return `${wrapperOpen(meta)}${headHtml(meta, inline)}<div class="jhtml-body">${inline(content)}</div></div>`;
 	}

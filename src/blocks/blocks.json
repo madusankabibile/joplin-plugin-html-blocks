@@ -3302,6 +3302,83 @@
 			"bodyHint": "Name :: Role :: Since\nAna :: Design :: 2021\nBo :: Code :: 2023"
 		},
 		{
+			"id": "table_bordered",
+			"label": "Table (bordered)",
+			"category": "Tables & data",
+			"mode": "table",
+			"theme": "soft",
+			"color": "#14b8a6",
+			"variant": "bordered",
+			"titleHint": "Team",
+			"bodyHint": "Name :: Role :: Since\nAna :: Design :: 2021\nBo :: Code :: 2023"
+		},
+		{
+			"id": "table_compact",
+			"label": "Table (compact)",
+			"category": "Tables & data",
+			"mode": "table",
+			"theme": "soft",
+			"color": "#06b6d4",
+			"variant": "compact",
+			"titleHint": "Team",
+			"bodyHint": "Name :: Role :: Since\nAna :: Design :: 2021\nBo :: Code :: 2023"
+		},
+		{
+			"id": "table_solid",
+			"label": "Table (solid header)",
+			"category": "Tables & data",
+			"mode": "table",
+			"theme": "solid",
+			"color": "#8b5cf6",
+			"titleHint": "Team",
+			"bodyHint": "Name :: Role :: Since\nAna :: Design :: 2021\nBo :: Code :: 2023"
+		},
+		{
+			"id": "table_outline",
+			"label": "Table (outline)",
+			"category": "Tables & data",
+			"mode": "table",
+			"theme": "outline",
+			"color": "#10b981",
+			"titleHint": "Team",
+			"bodyHint": "Name :: Role :: Since\nAna :: Design :: 2021\nBo :: Code :: 2023"
+		},
+		{
+			"id": "table_elevated",
+			"label": "Table (elevated)",
+			"category": "Tables & data",
+			"mode": "table",
+			"theme": "elevated",
+			"color": "#3b82f6",
+			"titleHint": "Team",
+			"bodyHint": "Name :: Role :: Since\nAna :: Design :: 2021\nBo :: Code :: 2023"
+		},
+		{
+			"id": "table_rowhead",
+			"label": "Table (row headings)",
+			"category": "Tables & data",
+			"mode": "table",
+			"theme": "soft",
+			"color": "#6366f1",
+			"variant": "rowhead",
+			"titleHint": "Team",
+			"bodyHint": "Plan :: Free :: Pro\nPrice :: 0 :: 9\nSeats :: 1 :: 25\nSupport :: Forum :: Email"
+		},
+		{
+			"id": "table_matrix",
+			"label": "Feature matrix",
+			"category": "Tables & data",
+			"mode": "table",
+			"theme": "soft",
+			"color": "#22c55e",
+			"aliases": [
+				"matrix"
+			],
+			"variant": "matrix",
+			"titleHint": "What you get",
+			"bodyHint": "Feature :: Free :: Pro\nBlocks :: yes :: yes\nThemes :: partly :: yes\nSupport :: no :: yes"
+		},
+		{
 			"id": "pros_cons",
 			"label": "Pros and cons",
 			"category": "Tables & data",
@@ -3347,6 +3424,769 @@
 			"color": "#64748b",
 			"titleHint": "Conversation",
 			"bodyHint": "Ana :: Did you see the new blocks?\nBo :: Just tried them - they look great."
+		},
+		{
+			"id": "chart_column",
+			"label": "Column chart",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#3b82f6",
+			"aliases": [
+				"chart",
+				"bars_vertical"
+			],
+			"chart": "column",
+			"titleHint": "Monthly totals",
+			"bodyHint": "Jan :: 12\nFeb :: 28\nMar :: 19\nApr :: 34\nMay :: 25"
+		},
+		{
+			"id": "chart_column_multi",
+			"label": "Column chart (multi-colour)",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#6366f1",
+			"variant": "multi",
+			"chart": "column",
+			"titleHint": "Monthly totals",
+			"bodyHint": "Jan :: 12\nFeb :: 28\nMar :: 19\nApr :: 34\nMay :: 25"
+		},
+		{
+			"id": "chart_column_minimal",
+			"label": "Column chart (minimal)",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "minimal",
+			"color": "#64748b",
+			"chart": "column",
+			"titleHint": "Monthly totals",
+			"bodyHint": "Jan :: 12\nFeb :: 28\nMar :: 19\nApr :: 34\nMay :: 25"
+		},
+		{
+			"id": "chart_column_elevated",
+			"label": "Column chart (elevated)",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "elevated",
+			"color": "#8b5cf6",
+			"chart": "column",
+			"titleHint": "Monthly totals",
+			"bodyHint": "Jan :: 12\nFeb :: 28\nMar :: 19\nApr :: 34\nMay :: 25"
+		},
+		{
+			"id": "chart_bar",
+			"label": "Bar chart",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#14b8a6",
+			"aliases": [
+				"barchart"
+			],
+			"chart": "bar",
+			"titleHint": "Monthly totals",
+			"bodyHint": "Jan :: 12\nFeb :: 28\nMar :: 19\nApr :: 34\nMay :: 25"
+		},
+		{
+			"id": "chart_bar_multi",
+			"label": "Bar chart (multi-colour)",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#a855f7",
+			"variant": "multi",
+			"chart": "bar",
+			"titleHint": "Monthly totals",
+			"bodyHint": "Jan :: 12\nFeb :: 28\nMar :: 19\nApr :: 34\nMay :: 25"
+		},
+		{
+			"id": "chart_bar_minimal",
+			"label": "Bar chart (minimal)",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "minimal",
+			"color": "#64748b",
+			"chart": "bar",
+			"titleHint": "Monthly totals",
+			"bodyHint": "Jan :: 12\nFeb :: 28\nMar :: 19\nApr :: 34\nMay :: 25"
+		},
+		{
+			"id": "chart_pie",
+			"label": "Pie chart",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#f59e0b",
+			"aliases": [
+				"pie"
+			],
+			"chart": "pie",
+			"titleHint": "Browser share",
+			"bodyHint": "Chrome :: 62\nFirefox :: 18\nSafari :: 12\nOther :: 8"
+		},
+		{
+			"id": "chart_donut",
+			"label": "Donut chart",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#06b6d4",
+			"aliases": [
+				"donut"
+			],
+			"chart": "donut",
+			"titleHint": "Browser share",
+			"bodyHint": "Chrome :: 62\nFirefox :: 18\nSafari :: 12\nOther :: 8"
+		},
+		{
+			"id": "chart_donut_elevated",
+			"label": "Donut chart (elevated)",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "elevated",
+			"color": "#6366f1",
+			"chart": "donut",
+			"titleHint": "Browser share",
+			"bodyHint": "Chrome :: 62\nFirefox :: 18\nSafari :: 12\nOther :: 8"
+		},
+		{
+			"id": "chart_stacked",
+			"label": "Stacked bar",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#8b5cf6",
+			"aliases": [
+				"stacked"
+			],
+			"chart": "stack",
+			"titleHint": "Browser share",
+			"bodyHint": "Chrome :: 62\nFirefox :: 18\nSafari :: 12\nOther :: 8"
+		},
+		{
+			"id": "chart_line",
+			"label": "Line chart",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#3b82f6",
+			"aliases": [
+				"graph",
+				"linechart"
+			],
+			"chart": "line",
+			"titleHint": "Visitors this week",
+			"bodyHint": "Mon :: 12\nTue :: 19\nWed :: 15\nThu :: 27\nFri :: 34\nSat :: 22\nSun :: 18"
+		},
+		{
+			"id": "chart_area",
+			"label": "Area chart",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#10b981",
+			"aliases": [
+				"areachart"
+			],
+			"chart": "area",
+			"titleHint": "Visitors this week",
+			"bodyHint": "Mon :: 12\nTue :: 19\nWed :: 15\nThu :: 27\nFri :: 34\nSat :: 22\nSun :: 18"
+		},
+		{
+			"id": "chart_line_minimal",
+			"label": "Line chart (minimal)",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "minimal",
+			"color": "#64748b",
+			"chart": "line",
+			"titleHint": "Visitors this week",
+			"bodyHint": "Mon :: 12\nTue :: 19\nWed :: 15\nThu :: 27\nFri :: 34\nSat :: 22\nSun :: 18"
+		},
+		{
+			"id": "chart_sparkline",
+			"label": "Sparkline",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "minimal",
+			"color": "#f43f5e",
+			"aliases": [
+				"sparkline"
+			],
+			"variant": "spark",
+			"chart": "line",
+			"titleHint": "Trend",
+			"bodyHint": "Mon :: 12\nTue :: 19\nWed :: 15\nThu :: 27\nFri :: 34\nSat :: 22\nSun :: 18"
+		},
+		{
+			"id": "chart_gauge",
+			"label": "Gauges",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#22c55e",
+			"aliases": [
+				"gauge",
+				"dials"
+			],
+			"chart": "gauge",
+			"titleHint": "Capacity",
+			"bodyHint": "Storage :: 72%\nMemory :: 45%\nCPU :: 88%"
+		},
+		{
+			"id": "chart_gauge_multi",
+			"label": "Gauges (multi-colour)",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "soft",
+			"color": "#6366f1",
+			"variant": "multi",
+			"chart": "gauge",
+			"titleHint": "Capacity",
+			"bodyHint": "Storage :: 72%\nMemory :: 45%\nCPU :: 88%"
+		},
+		{
+			"id": "chart_gauge_minimal",
+			"label": "Gauges (minimal)",
+			"category": "Charts",
+			"mode": "chart",
+			"theme": "minimal",
+			"color": "#64748b",
+			"chart": "gauge",
+			"titleHint": "Capacity",
+			"bodyHint": "Storage :: 72%\nMemory :: 45%\nCPU :: 88%"
+		},
+		{
+			"id": "flow",
+			"label": "Flow chart",
+			"category": "Diagrams",
+			"mode": "flow",
+			"theme": "soft",
+			"color": "#3b82f6",
+			"aliases": [
+				"pipeline"
+			],
+			"titleHint": "Pipeline",
+			"bodyHint": "Draft :: Write it down\nReview :: Check it over\nShip :: Publish it"
+		},
+		{
+			"id": "flow_down",
+			"label": "Flow chart (top to bottom)",
+			"category": "Diagrams",
+			"mode": "flow",
+			"theme": "soft",
+			"color": "#6366f1",
+			"variant": "down",
+			"titleHint": "Pipeline",
+			"bodyHint": "Draft :: Write it down\nReview :: Check it over\nShip :: Publish it"
+		},
+		{
+			"id": "flow_solid",
+			"label": "Flow chart (solid)",
+			"category": "Diagrams",
+			"mode": "flow",
+			"theme": "solid",
+			"color": "#8b5cf6",
+			"titleHint": "Pipeline",
+			"bodyHint": "Draft :: Write it down\nReview :: Check it over\nShip :: Publish it"
+		},
+		{
+			"id": "flow_outline",
+			"label": "Flow chart (outline)",
+			"category": "Diagrams",
+			"mode": "flow",
+			"theme": "outline",
+			"color": "#14b8a6",
+			"titleHint": "Pipeline",
+			"bodyHint": "Draft :: Write it down\nReview :: Check it over\nShip :: Publish it"
+		},
+		{
+			"id": "flow_minimal",
+			"label": "Flow chart (minimal)",
+			"category": "Diagrams",
+			"mode": "flow",
+			"theme": "minimal",
+			"color": "#64748b",
+			"titleHint": "Pipeline",
+			"bodyHint": "Draft :: Write it down\nReview :: Check it over\nShip :: Publish it"
+		},
+		{
+			"id": "tree",
+			"label": "Tree / hierarchy",
+			"category": "Diagrams",
+			"mode": "tree",
+			"theme": "soft",
+			"color": "#10b981",
+			"aliases": [
+				"hierarchy",
+				"filetree"
+			],
+			"titleHint": "Project layout",
+			"bodyHint": "src\n  blocks\n    render.ts\n    syntax.ts\n  index.ts\nREADME.md"
+		},
+		{
+			"id": "tree_outline",
+			"label": "Tree (outline)",
+			"category": "Diagrams",
+			"mode": "tree",
+			"theme": "outline",
+			"color": "#14b8a6",
+			"titleHint": "Project layout",
+			"bodyHint": "src\n  blocks\n    render.ts\n    syntax.ts\n  index.ts\nREADME.md"
+		},
+		{
+			"id": "tree_minimal",
+			"label": "Tree (minimal)",
+			"category": "Diagrams",
+			"mode": "tree",
+			"theme": "minimal",
+			"color": "#64748b",
+			"titleHint": "Project layout",
+			"bodyHint": "src\n  blocks\n    render.ts\n    syntax.ts\n  index.ts\nREADME.md"
+		},
+		{
+			"id": "tree_terminal",
+			"label": "Tree (terminal)",
+			"category": "Diagrams",
+			"mode": "tree",
+			"theme": "soft",
+			"color": "#334155",
+			"variant": "terminal",
+			"titleHint": "Project layout",
+			"bodyHint": "src\n  blocks\n    render.ts\n    syntax.ts\n  index.ts\nREADME.md"
+		},
+		{
+			"id": "buttons",
+			"label": "Button row",
+			"category": "Buttons & links",
+			"mode": "buttons",
+			"theme": "soft",
+			"color": "#3b82f6",
+			"aliases": [
+				"links"
+			],
+			"titleHint": "Where to go next",
+			"bodyHint": "📖 Documentation :: https://joplinapp.org\n⬇️ Download :: https://joplinapp.org/download\n💬 Forum :: https://discourse.joplinapp.org"
+		},
+		{
+			"id": "buttons_solid",
+			"label": "Buttons (solid)",
+			"category": "Buttons & links",
+			"mode": "buttons",
+			"theme": "soft",
+			"color": "#6366f1",
+			"variant": "solidbtn",
+			"titleHint": "Where to go next",
+			"bodyHint": "📖 Documentation :: https://joplinapp.org\n⬇️ Download :: https://joplinapp.org/download\n💬 Forum :: https://discourse.joplinapp.org"
+		},
+		{
+			"id": "buttons_outline",
+			"label": "Buttons (outline)",
+			"category": "Buttons & links",
+			"mode": "buttons",
+			"theme": "soft",
+			"color": "#14b8a6",
+			"variant": "outlinebtn",
+			"titleHint": "Where to go next",
+			"bodyHint": "📖 Documentation :: https://joplinapp.org\n⬇️ Download :: https://joplinapp.org/download\n💬 Forum :: https://discourse.joplinapp.org"
+		},
+		{
+			"id": "buttons_pill",
+			"label": "Buttons (pill)",
+			"category": "Buttons & links",
+			"mode": "buttons",
+			"theme": "soft",
+			"color": "#8b5cf6",
+			"variant": "pill",
+			"titleHint": "Where to go next",
+			"bodyHint": "📖 Documentation :: https://joplinapp.org\n⬇️ Download :: https://joplinapp.org/download\n💬 Forum :: https://discourse.joplinapp.org"
+		},
+		{
+			"id": "buttons_block",
+			"label": "Buttons (full width)",
+			"category": "Buttons & links",
+			"mode": "buttons",
+			"theme": "soft",
+			"color": "#10b981",
+			"variant": "block",
+			"titleHint": "Where to go next",
+			"bodyHint": "📖 Documentation :: https://joplinapp.org\n⬇️ Download :: https://joplinapp.org/download\n💬 Forum :: https://discourse.joplinapp.org"
+		},
+		{
+			"id": "buttons_ghost",
+			"label": "Buttons (ghost)",
+			"category": "Buttons & links",
+			"mode": "buttons",
+			"theme": "minimal",
+			"color": "#64748b",
+			"variant": "ghost",
+			"titleHint": "Where to go next",
+			"bodyHint": "📖 Documentation :: https://joplinapp.org\n⬇️ Download :: https://joplinapp.org/download\n💬 Forum :: https://discourse.joplinapp.org"
+		},
+		{
+			"id": "buttons_cta",
+			"label": "Call to action",
+			"category": "Buttons & links",
+			"mode": "buttons",
+			"theme": "soft",
+			"color": "#f97316",
+			"variant": "cta",
+			"titleHint": "Ready to try it?",
+			"bodyHint": "⬇️ Download the plugin :: https://joplinapp.org/plugins\n📖 Read the manual :: https://joplinapp.org"
+		},
+		{
+			"id": "ascii_art",
+			"label": "ASCII art",
+			"category": "ASCII & text art",
+			"mode": "art",
+			"theme": "soft",
+			"color": "#64748b",
+			"aliases": [
+				"ascii",
+				"art"
+			],
+			"titleHint": "",
+			"bodyHint": "  /\\_/\\\n ( o.o )\n  > ^ <"
+		},
+		{
+			"id": "ascii_terminal",
+			"label": "ASCII art (terminal)",
+			"category": "ASCII & text art",
+			"mode": "art",
+			"theme": "soft",
+			"color": "#334155",
+			"variant": "terminal",
+			"titleHint": "output",
+			"bodyHint": "  /\\_/\\\n ( o.o )\n  > ^ <"
+		},
+		{
+			"id": "ascii_frame",
+			"label": "ASCII art (framed)",
+			"category": "ASCII & text art",
+			"mode": "art",
+			"theme": "soft",
+			"color": "#a16207",
+			"variant": "frame",
+			"titleHint": "",
+			"bodyHint": "  +---------+      +---------+\n  |  Editor | ---> | Viewer  |\n  +---------+      +---------+"
+		},
+		{
+			"id": "ascii_minimal",
+			"label": "ASCII art (minimal)",
+			"category": "ASCII & text art",
+			"mode": "art",
+			"theme": "minimal",
+			"color": "#6b7280",
+			"titleHint": "",
+			"bodyHint": "  +---------+      +---------+\n  |  Editor | ---> | Viewer  |\n  +---------+      +---------+"
+		},
+		{
+			"id": "ascii_center",
+			"label": "ASCII art (centred)",
+			"category": "ASCII & text art",
+			"mode": "art",
+			"theme": "soft",
+			"color": "#8b5cf6",
+			"variant": "centerart",
+			"titleHint": "",
+			"bodyHint": "  /\\_/\\\n ( o.o )\n  > ^ <"
+		},
+		{
+			"id": "big_text",
+			"label": "Big text banner",
+			"category": "ASCII & text art",
+			"mode": "bigtext",
+			"theme": "soft",
+			"color": "#3b82f6",
+			"aliases": [
+				"banner_text",
+				"figlet"
+			],
+			"titleHint": "",
+			"bodyHint": "JOPLIN"
+		},
+		{
+			"id": "big_text_solid",
+			"label": "Big text (solid)",
+			"category": "ASCII & text art",
+			"mode": "bigtext",
+			"theme": "solid",
+			"color": "#6366f1",
+			"titleHint": "",
+			"bodyHint": "JOPLIN"
+		},
+		{
+			"id": "big_text_gradient",
+			"label": "Big text (gradient)",
+			"category": "ASCII & text art",
+			"mode": "bigtext",
+			"theme": "gradient",
+			"color": "#8b5cf6",
+			"titleHint": "",
+			"bodyHint": "JOPLIN"
+		},
+		{
+			"id": "big_text_neon",
+			"label": "Big text (neon)",
+			"category": "ASCII & text art",
+			"mode": "bigtext",
+			"theme": "neon",
+			"color": "#d946ef",
+			"titleHint": "",
+			"bodyHint": "JOPLIN"
+		},
+		{
+			"id": "big_text_minimal",
+			"label": "Big text (minimal)",
+			"category": "ASCII & text art",
+			"mode": "bigtext",
+			"theme": "minimal",
+			"color": "#64748b",
+			"titleHint": "",
+			"bodyHint": "JOPLIN"
+		},
+		{
+			"id": "text_gradient",
+			"label": "Gradient headline",
+			"category": "ASCII & text art",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#8b5cf6",
+			"variant": "gradtext",
+			"titleHint": "",
+			"bodyHint": "Gradient headline"
+		},
+		{
+			"id": "text_neon",
+			"label": "Neon headline",
+			"category": "ASCII & text art",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#d946ef",
+			"variant": "neontext",
+			"titleHint": "",
+			"bodyHint": "Neon headline"
+		},
+		{
+			"id": "text_outline",
+			"label": "Outlined headline",
+			"category": "ASCII & text art",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#3b82f6",
+			"variant": "outlinetext",
+			"titleHint": "",
+			"bodyHint": "Outlined headline"
+		},
+		{
+			"id": "text_3d",
+			"label": "3D headline",
+			"category": "ASCII & text art",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#f97316",
+			"variant": "text3d",
+			"titleHint": "",
+			"bodyHint": "Three dimensional"
+		},
+		{
+			"id": "text_stamp",
+			"label": "Rubber stamp",
+			"category": "ASCII & text art",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#ef4444",
+			"variant": "stamp",
+			"titleHint": "",
+			"bodyHint": "APPROVED"
+		},
+		{
+			"id": "text_spaced",
+			"label": "Spaced caps",
+			"category": "ASCII & text art",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#64748b",
+			"variant": "spaced",
+			"titleHint": "",
+			"bodyHint": "Quiet confidence"
+		},
+		{
+			"id": "text_shadow",
+			"label": "Long shadow headline",
+			"category": "ASCII & text art",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#14b8a6",
+			"variant": "longshadow",
+			"titleHint": "",
+			"bodyHint": "Long shadow"
+		},
+		{
+			"id": "anim_fade",
+			"label": "Fade in",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#3b82f6",
+			"animation": "fade",
+			"titleHint": "Fade in",
+			"bodyHint": "This box fades in when the note is opened."
+		},
+		{
+			"id": "anim_slide",
+			"label": "Slide in",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#6366f1",
+			"animation": "slide",
+			"titleHint": "Slide in",
+			"bodyHint": "This box slides in from the left."
+		},
+		{
+			"id": "anim_rise",
+			"label": "Rise up",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#8b5cf6",
+			"animation": "rise",
+			"titleHint": "Rise up",
+			"bodyHint": "This box rises into place."
+		},
+		{
+			"id": "anim_zoom",
+			"label": "Zoom in",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#a855f7",
+			"animation": "zoom",
+			"titleHint": "Zoom in",
+			"bodyHint": "This box zooms in."
+		},
+		{
+			"id": "anim_flip",
+			"label": "Flip in",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#06b6d4",
+			"animation": "flip",
+			"titleHint": "Flip in",
+			"bodyHint": "This box flips into view."
+		},
+		{
+			"id": "anim_reveal",
+			"label": "Wipe reveal",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#14b8a6",
+			"animation": "reveal",
+			"titleHint": "Wipe reveal",
+			"bodyHint": "This box is wiped into view."
+		},
+		{
+			"id": "anim_pulse",
+			"label": "Pulse",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#f43f5e",
+			"animation": "pulse",
+			"titleHint": "Pulse",
+			"bodyHint": "This box keeps a slow pulse."
+		},
+		{
+			"id": "anim_bounce",
+			"label": "Bounce",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#f59e0b",
+			"animation": "bounce",
+			"titleHint": "Bounce",
+			"bodyHint": "This box bounces gently."
+		},
+		{
+			"id": "anim_shake",
+			"label": "Shake",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#ef4444",
+			"animation": "shake",
+			"titleHint": "Shake",
+			"bodyHint": "This box shakes for attention."
+		},
+		{
+			"id": "anim_float",
+			"label": "Float",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#38bdf8",
+			"animation": "float",
+			"titleHint": "Float",
+			"bodyHint": "This box drifts up and down."
+		},
+		{
+			"id": "anim_glow",
+			"label": "Glow",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#10b981",
+			"animation": "glow",
+			"titleHint": "Glow",
+			"bodyHint": "This box glows on and off."
+		},
+		{
+			"id": "anim_gradient",
+			"label": "Moving gradient",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#d946ef",
+			"animation": "gradient",
+			"titleHint": "Moving gradient",
+			"bodyHint": "The background of this box keeps moving."
+		},
+		{
+			"id": "anim_blink",
+			"label": "Blinking border",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#f97316",
+			"animation": "blink",
+			"titleHint": "Blinking border",
+			"bodyHint": "The border of this box blinks."
+		},
+		{
+			"id": "anim_typewriter",
+			"label": "Typewriter",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#22c55e",
+			"animation": "type",
+			"titleHint": "Typewriter",
+			"bodyHint": "Typed out one character at a time."
+		},
+		{
+			"id": "anim_marquee",
+			"label": "Scrolling marquee",
+			"category": "Animations",
+			"mode": "plain",
+			"theme": "soft",
+			"color": "#a16207",
+			"animation": "marquee",
+			"titleHint": "Scrolling marquee",
+			"bodyHint": "This line scrolls across the block, over and over."
 		}
 	]
 }
