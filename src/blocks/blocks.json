@@ -1183,15 +1183,156 @@
 			"bodyHint": "Card contents"
 		},
 		{
+			"id": "note",
+			"label": "Note",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#448aff",
+			"icon": "🖋",
+			"defaultTitle": "Note",
+			"titleHint": "Note",
+			"bodyHint": "A side note."
+		},
+		{
+			"id": "abstract",
+			"label": "Abstract",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#00b0ff",
+			"icon": "≣",
+			"defaultTitle": "Abstract",
+			"titleHint": "Abstract",
+			"bodyHint": "The short version."
+		},
+		{
+			"id": "info",
+			"label": "Info",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#00b8d4",
+			"icon": "ℹ️",
+			"defaultTitle": "Info",
+			"titleHint": "Info",
+			"bodyHint": "Something worth knowing."
+		},
+		{
+			"id": "tip",
+			"label": "Tip",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#00bfa5",
+			"icon": "🔥",
+			"defaultTitle": "Tip",
+			"titleHint": "Tip",
+			"bodyHint": "A helpful tip."
+		},
+		{
+			"id": "success",
+			"label": "Success",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#00c853",
+			"icon": "✅",
+			"defaultTitle": "Success",
+			"titleHint": "Success",
+			"bodyHint": "It worked."
+		},
+		{
+			"id": "question",
+			"label": "Question",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#64dd17",
+			"icon": "❓",
+			"defaultTitle": "Question",
+			"titleHint": "Question",
+			"bodyHint": "Something to figure out."
+		},
+		{
+			"id": "warning",
+			"label": "Warning",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#ff9100",
+			"icon": "⚠️",
+			"defaultTitle": "Warning",
+			"titleHint": "Warning",
+			"bodyHint": "Be careful here."
+		},
+		{
+			"id": "failure",
+			"label": "Failure",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#ff5252",
+			"icon": "❌",
+			"defaultTitle": "Failure",
+			"titleHint": "Failure",
+			"bodyHint": "What did not work."
+		},
+		{
+			"id": "danger",
+			"label": "Danger",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#ff1744",
+			"icon": "⚡️",
+			"defaultTitle": "Danger",
+			"titleHint": "Danger",
+			"bodyHint": "This can break things."
+		},
+		{
+			"id": "bug",
+			"label": "Bug",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#f50057",
+			"icon": "🕷",
+			"defaultTitle": "Bug",
+			"titleHint": "Bug",
+			"bodyHint": "What goes wrong."
+		},
+		{
+			"id": "example",
+			"label": "Example",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#7c4dff",
+			"icon": "☞",
+			"defaultTitle": "Example",
+			"titleHint": "Example",
+			"bodyHint": "For instance..."
+		},
+		{
+			"id": "quote",
+			"label": "Quote",
+			"category": "Admonitions",
+			"mode": "callout",
+			"theme": "admonition",
+			"color": "#9e9e9e",
+			"icon": "❞",
+			"defaultTitle": "Quote",
+			"titleHint": "Quote",
+			"bodyHint": "What somebody said."
+		},
+		{
 			"id": "callout_info",
 			"label": "Info",
 			"category": "Callouts",
 			"mode": "callout",
 			"theme": "soft",
 			"color": "#3b82f6",
-			"aliases": [
-				"info"
-			],
 			"icon": "ℹ️",
 			"defaultTitle": "Info",
 			"titleHint": "Info",
@@ -1205,7 +1346,6 @@
 			"theme": "soft",
 			"color": "#10b981",
 			"aliases": [
-				"tip",
 				"hint"
 			],
 			"icon": "💡",
@@ -1220,9 +1360,6 @@
 			"mode": "callout",
 			"theme": "soft",
 			"color": "#64748b",
-			"aliases": [
-				"note"
-			],
 			"icon": "📝",
 			"defaultTitle": "Note",
 			"titleHint": "Note",
@@ -1236,7 +1373,6 @@
 			"theme": "soft",
 			"color": "#22c55e",
 			"aliases": [
-				"success",
 				"done"
 			],
 			"icon": "✅",
@@ -1252,7 +1388,6 @@
 			"theme": "soft",
 			"color": "#f59e0b",
 			"aliases": [
-				"warning",
 				"caution"
 			],
 			"icon": "⚠️",
@@ -1268,7 +1403,6 @@
 			"theme": "soft",
 			"color": "#ef4444",
 			"aliases": [
-				"danger",
 				"error"
 			],
 			"icon": "⛔",
@@ -1284,7 +1418,6 @@
 			"theme": "soft",
 			"color": "#8b5cf6",
 			"aliases": [
-				"question",
 				"faq"
 			],
 			"icon": "❓",
@@ -1299,9 +1432,6 @@
 			"mode": "callout",
 			"theme": "soft",
 			"color": "#06b6d4",
-			"aliases": [
-				"example"
-			],
 			"icon": "🧪",
 			"defaultTitle": "Example",
 			"titleHint": "Example",
@@ -1314,9 +1444,6 @@
 			"mode": "callout",
 			"theme": "soft",
 			"color": "#f43f5e",
-			"aliases": [
-				"bug"
-			],
 			"icon": "🐛",
 			"defaultTitle": "Bug",
 			"titleHint": "Bug",
@@ -1345,7 +1472,6 @@
 			"theme": "soft",
 			"color": "#06b6d4",
 			"aliases": [
-				"abstract",
 				"summary",
 				"tldr"
 			],
@@ -3044,7 +3170,7 @@
 			"theme": "soft",
 			"color": "#8b5cf6",
 			"aliases": [
-				"quote"
+				"blockquote"
 			],
 			"titleHint": "Author name",
 			"bodyHint": "The quoted text goes here."

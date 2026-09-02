@@ -12,8 +12,8 @@ Card contents, with the usual **markdown** you'd expect.
 ```
 
 ...renders as a light blue card in the note viewer, in exported HTML and in PDF
-exports. 371 block types are included, in 33 categories: cards in eleven styles,
-admonition-style callouts, twenty-two list styles, steps, timelines, stat tiles,
+exports. 383 block types are included, in 34 categories: the twelve classic
+admonitions, cards in eleven styles, callouts, twenty-two list styles, steps, timelines, stat tiles,
 progress bars, ratings, tables, pros and cons, FAQs, feature grids, chat
 transcripts, grids, banners, collapsible sections - plus charts (columns, bars,
 pie, donut, line, area, gauges), flow charts and trees, button rows, ASCII and
@@ -25,18 +25,30 @@ a PDF export, and they follow your Joplin theme like everything else.
 
 ## Screenshots
 
-![The block picker](screenshots/01-block-picker.png)
+![The twelve admonitions in the block picker](screenshots/01-admonitions.png)
 
-*The picker: filter 298 blocks by name, id, colour or theme, and insert one with
-a click.*
+*The twelve admonitions, styled to match the Admonition markdown extension so
+existing notes migrate unchanged.*
 
-![Card blocks in the note viewer](screenshots/02-card-blocks.png)
+![The block picker](screenshots/02-block-picker.png)
 
-*Cards in the note viewer - solid, outline, tinted, gradient and elevated.*
+*The picker: filter 383 blocks by name, id, colour or theme, and insert one with
+a click. Every tile is a live preview, not a drawing.*
 
-![Checklists, stat tiles and grids](screenshots/03-lists-stats-grids.png)
+![Charts drawn in plain CSS](screenshots/03-charts.png)
 
-*Checklists, stat tiles, badge rows, grids and key/value tables.*
+*Columns, bars, pie, donut, line, area and gauges - all plain CSS, no script and
+no images.*
+
+![Big text and text art](screenshots/07-text-art.png)
+
+*Big-text banners, gradient and neon headlines, outlines, 3D and rubber stamps.*
+
+More of the picker: [stat tiles, progress bars and
+ratings](screenshots/04-stats-progress-ratings.png), [tables and key/value
+data](screenshots/05-tables-and-data.png), [collapsible sections and
+FAQs](screenshots/06-collapsible-and-faq.png), and
+[animations](screenshots/08-animations.png).
 
 ## Installation
 
@@ -140,6 +152,7 @@ pairs each one with its markdown. The categories are:
 | Cards · Ribbon | 8 | `card_ribbon_blue`, `card_ribbon_violet`, `card_ribbon_pink` |
 | Cards · Dashed | 8 | `card_dashed_blue`, `card_dashed_violet`, `card_dashed_pink` |
 | Cards · Underline | 8 | `card_underline_blue`, `card_underline_violet`, `card_underline_pink` |
+| Admonitions | 12 | `note`, `warning`, `danger` |
 | Callouts | 28 | `callout_info`, `callout_tip`, `callout_warning` |
 | Callouts · Solid | 10 | `callout_info_solid`, `callout_tip_solid`, `callout_note_solid` |
 | Callouts · Outline | 10 | `callout_info_outline`, `callout_tip_outline`, `callout_note_outline` |
@@ -164,7 +177,7 @@ pairs each one with its markdown. The categories are:
 | Animations | 15 | `anim_fade`, `anim_typewriter`, `anim_marquee` |
 
 Most ids read the way they look: `<family>_<theme>_<colour>`. The short,
-memorable ones are aliased - `info`, `tip`, `warning`, `note`, `quote`,
+memorable ones are aliased - `hint`, `caution`, `error`, `todo`, `summary`,
 `collapse`, `spoiler`, `kv`, `tags`, `terminal` and friends all work as types.
 
 **Line formats.** Blocks that take one line per item split their fields on `::`:
@@ -192,6 +205,41 @@ memorable ones are aliased - `info`, `tip`, `warning`, `note`, `quote`,
 | `table_matrix` | `yes` / `no` / `partly` in a cell become a tick, a cross or a tilde |
 | `ascii_*` | kept exactly as typed - every space and blank line survives |
 | `big_text` | one line of text per banner, spelled out in block letters |
+
+## Coming from the Admonition markdown extension
+
+If your notes already use the [Admonition markdown
+extension](https://joplinapp.org/plugins/plugin/org.joplinapp.plugins.admonition/),
+they render here unchanged - no rewriting, and no need to keep both plugins
+installed.
+
+The fence syntax was already the same (`!!! type Optional title` ... `!!!`), and
+its twelve types are first-class blocks here, styled to match: the
+[mkdocs-material](https://squidfunk.github.io/mkdocs-material/reference/admonitions/)
+colours, the same title-bar emoji, the same accent rule down the left edge.
+
+| | | | |
+|---|---|---|---|
+| `note` | `abstract` | `info` | `tip` |
+| `success` | `question` | `warning` | `failure` |
+| `danger` | `bug` | `example` | `quote` |
+
+```
+!!! warning Watch out
+Renders exactly as it did under the old plugin.
+!!!
+```
+
+Two small differences, both cosmetic:
+
+* The title band uses your Joplin background rather than a fixed white, so the
+  blocks stay readable in a dark theme.
+* A block with no title of its own is headed `Note` rather than `note`.
+
+These twelve are separate from this plugin's own `callout_*` family, which keeps
+its rounded, tinted look and its own set of types - use either, or both. Two ids
+moved to make room: `!!! quote` is now the admonition, and the plugin's original
+quote block is `quote_box` (or `blockquote`).
 
 ## Editor highlighting
 
@@ -244,7 +292,7 @@ around it looks like). The two are independent - any theme works on any mode:
   `table`, `compare`, `faq`, `feature`, `chat`, `chart`, `flow`, `tree`,
   `buttons`, `art`, `bigtext`.
 * `theme`: `soft` (the default), `solid`, `outline`, `gradient`, `elevated`,
-  `glass`, `neon`, `minimal`, `ribbon`, `dashed`, `underline`.
+  `glass`, `neon`, `minimal`, `ribbon`, `dashed`, `underline`, `admonition`.
 
 The remaining fields (`icon`, `defaultTitle`, `variant`, `chart`, `animation`,
 `listStyle`, `ordered`, `columns`, `bare`, `open`, `aliases`) are documented in

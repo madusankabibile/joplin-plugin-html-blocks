@@ -2275,6 +2275,37 @@ pre.jhtml-art-big {
 	padding-right: 2px;
 }
 
+/* The chrome of the "Admonition markdown extension" plugin, reproduced so that
+ * a note library written for it keeps its old look here. Faithful to that
+ * plugin's stylesheet - an accent rule down the left, a title band tinted 10%
+ * of the accent, square corners, no card fill - except that the tint is mixed
+ * against the Joplin background instead of being a fixed rgba(), so the block
+ * survives a dark theme. */
+.jhtml.jhtml-t-admonition {
+	border: none;
+	border-left: 4px solid var(--jh-color);
+	border-radius: 2px;
+	background: transparent;
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05), 0 0 1px rgba(0, 0, 0, 0.1);
+	padding: 0 12px;
+	overflow: hidden;
+}
+
+.jhtml.jhtml-t-admonition > .jhtml-head {
+	/* Pulled out to the padding edges so the tint spans the whole block. */
+	margin: 0 -12px;
+	padding: 8px 12px;
+	background: var(--jh-tint);
+	color: var(--jh-fg);
+	font-size: 1em;
+	font-weight: 700;
+}
+
+/* No padding of its own on the container, so the body carries its own. */
+.jhtml.jhtml-t-admonition > .jhtml-body {
+	padding: 10px 0;
+}
+
 /* Themes that fill the block leave the inner surfaces to the variables, but a
  * few inner boxes carry their own border and would otherwise disappear. */
 .jhtml-t-solid .jhtml-stat,

@@ -55,7 +55,9 @@ export type BlockTheme =
 	| 'minimal'
 	| 'ribbon'
 	| 'dashed'
-	| 'underline';
+	| 'underline'
+	/* Reproduces the chrome of the Admonition markdown extension plugin. */
+	| 'admonition';
 
 export type ListStyle =
 	| 'dot'

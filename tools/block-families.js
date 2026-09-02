@@ -124,6 +124,7 @@ const THEMES = {
 	ribbon: 'Ribbon',
 	dashed: 'Dashed',
 	underline: 'Underline',
+	admonition: 'Admonition',
 };
 
 const blocks = [];
@@ -203,23 +204,70 @@ for (const family of CARD_THEMES) {
 }
 
 // --------------------------------------------------------------------------
+// Admonitions
+// --------------------------------------------------------------------------
+// The twelve types of the "Admonition markdown extension" plugin
+// (org.joplinapp.plugins.admonition), so a library of notes written for it goes
+// on rendering the way it always did after switching to this plugin.
+//
+// The fence syntax was already identical - `!!! type Optional title` ... `!!!` -
+// so only the look had to be matched: these are the mkdocs-material colours and
+// the emoji that plugin drew in the title bar, wired to the `admonition` theme,
+// which reproduces its chrome (accent rule down the left, tinted title band, no
+// rounded card). None of these is a synonym of a `callout_*` block: the two
+// families are styled independently and can be used side by side.
+//
+// The colours are literal rather than palette keys on purpose - they are exactly
+// the ones mkdocs-material ships, and must not drift with the plugin palette.
+
+const ADMONITIONS = [
+	{ id: 'note', label: 'Note', icon: '🖋', color: '#448aff', body: 'A side note.' },
+	{ id: 'abstract', label: 'Abstract', icon: '≣', color: '#00b0ff', body: 'The short version.' },
+	{ id: 'info', label: 'Info', icon: 'ℹ️', color: '#00b8d4', body: 'Something worth knowing.' },
+	{ id: 'tip', label: 'Tip', icon: '🔥', color: '#00bfa5', body: 'A helpful tip.' },
+	{ id: 'success', label: 'Success', icon: '✅', color: '#00c853', body: 'It worked.' },
+	{ id: 'question', label: 'Question', icon: '❓', color: '#64dd17', body: 'Something to figure out.' },
+	{ id: 'warning', label: 'Warning', icon: '⚠️', color: '#ff9100', body: 'Be careful here.' },
+	{ id: 'failure', label: 'Failure', icon: '❌', color: '#ff5252', body: 'What did not work.' },
+	{ id: 'danger', label: 'Danger', icon: '⚡️', color: '#ff1744', body: 'This can break things.' },
+	{ id: 'bug', label: 'Bug', icon: '🕷', color: '#f50057', body: 'What goes wrong.' },
+	{ id: 'example', label: 'Example', icon: '☞', color: '#7c4dff', body: 'For instance...' },
+	{ id: 'quote', label: 'Quote', icon: '❞', color: '#9e9e9e', body: 'What somebody said.' },
+];
+
+for (const admonition of ADMONITIONS) {
+	add({
+		id: admonition.id,
+		label: admonition.label,
+		category: 'Admonitions',
+		mode: 'callout',
+		theme: 'admonition',
+		color: admonition.color,
+		icon: admonition.icon,
+		defaultTitle: admonition.label,
+		titleHint: admonition.label,
+		bodyHint: admonition.body,
+	});
+}
+
+// --------------------------------------------------------------------------
 // Callouts
 // --------------------------------------------------------------------------
 
 const CALLOUTS = [
-	{ id: 'callout_info', label: 'Info', icon: 'ℹ️', color: 'blue', aliases: ['info'], body: 'Something worth knowing.' },
-	{ id: 'callout_tip', label: 'Tip', icon: '💡', color: 'emerald', aliases: ['tip', 'hint'], body: 'A helpful tip.' },
-	{ id: 'callout_note', label: 'Note', icon: '📝', color: 'slate', aliases: ['note'], body: 'A side note.' },
-	{ id: 'callout_success', label: 'Success', icon: '✅', color: 'green', aliases: ['success', 'done'], body: 'It worked.' },
-	{ id: 'callout_warning', label: 'Warning', icon: '⚠️', color: 'amber', aliases: ['warning', 'caution'], body: 'Be careful here.' },
-	{ id: 'callout_danger', label: 'Danger', icon: '⛔', color: 'red', aliases: ['danger', 'error'], body: 'This can break things.' },
-	{ id: 'callout_question', label: 'Question', icon: '❓', color: 'violet', aliases: ['question', 'faq'], body: 'Something to figure out.' },
-	{ id: 'callout_example', label: 'Example', icon: '🧪', color: 'cyan', aliases: ['example'], body: 'For instance...' },
-	{ id: 'callout_bug', label: 'Bug', icon: '🐛', color: 'rose', aliases: ['bug'], body: 'What goes wrong.' },
+	{ id: 'callout_info', label: 'Info', icon: 'ℹ️', color: 'blue', body: 'Something worth knowing.' },
+	{ id: 'callout_tip', label: 'Tip', icon: '💡', color: 'emerald', aliases: ['hint'], body: 'A helpful tip.' },
+	{ id: 'callout_note', label: 'Note', icon: '📝', color: 'slate', body: 'A side note.' },
+	{ id: 'callout_success', label: 'Success', icon: '✅', color: 'green', aliases: ['done'], body: 'It worked.' },
+	{ id: 'callout_warning', label: 'Warning', icon: '⚠️', color: 'amber', aliases: ['caution'], body: 'Be careful here.' },
+	{ id: 'callout_danger', label: 'Danger', icon: '⛔', color: 'red', aliases: ['error'], body: 'This can break things.' },
+	{ id: 'callout_question', label: 'Question', icon: '❓', color: 'violet', aliases: ['faq'], body: 'Something to figure out.' },
+	{ id: 'callout_example', label: 'Example', icon: '🧪', color: 'cyan', body: 'For instance...' },
+	{ id: 'callout_bug', label: 'Bug', icon: '🐛', color: 'rose', body: 'What goes wrong.' },
 	{ id: 'callout_todo', label: 'To do', icon: '📌', color: 'orange', aliases: ['todo'], body: 'What is left to do.' },
 
 	// Added in 1.1
-	{ id: 'callout_abstract', label: 'Abstract', icon: '📄', color: 'cyan', aliases: ['abstract', 'summary', 'tldr'], body: 'The short version.' },
+	{ id: 'callout_abstract', label: 'Abstract', icon: '📄', color: 'cyan', aliases: ['summary', 'tldr'], body: 'The short version.' },
 	{ id: 'callout_important', label: 'Important', icon: '❗', color: 'rose', aliases: ['important'], body: 'Do not skip this.' },
 	{ id: 'callout_key', label: 'Key point', icon: '🔑', color: 'amber', aliases: ['key', 'takeaway'], body: 'The one thing to remember.' },
 	{ id: 'callout_idea', label: 'Idea', icon: '🧠', color: 'purple', aliases: ['idea'], body: 'Worth trying one day.' },
@@ -592,7 +640,7 @@ for (const banner of BANNERS) {
 // --------------------------------------------------------------------------
 
 const QUOTES = [
-	{ id: 'quote_box', label: 'Quote', color: 'violet', theme: 'soft', aliases: ['quote'] },
+	{ id: 'quote_box', label: 'Quote', color: 'violet', theme: 'soft', aliases: ['blockquote'] },
 	{ id: 'quote_solid', label: 'Quote (solid)', color: 'indigo', theme: 'solid' },
 	{ id: 'quote_minimal', label: 'Quote (minimal)', color: 'slate', theme: 'minimal' },
 	{ id: 'quote_pull', label: 'Pull quote', color: 'blue', theme: 'soft', variant: 'pull' },

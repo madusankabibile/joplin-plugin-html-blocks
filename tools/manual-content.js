@@ -138,6 +138,11 @@ const GALLERY_CATEGORIES = {
 		note: 'Every card in this family uses the identical syntax - only the accent colour changes. Swap the id for any of the previews below.',
 		sample: { title: 'Card title', body: 'Card contents, in ordinary markdown.' },
 	},
+	Admonitions: {
+		lead: 'note',
+		note: 'The twelve types of the Admonition markdown extension plugin, styled to match it - so notes written for that plugin render here unchanged, with no rewriting and no need to keep both installed. The fence is the same one it used: <code>!!! type Optional title</code>, closed with <code>!!!</code>. Leave the title off and the type name is used as the heading.',
+		sample: { title: '', body: 'Renders exactly as it did under the old plugin.' },
+	},
 	Callouts: {
 		lead: 'callout_info',
 		note: 'Callouts carry an icon and a built-in default title. Give them a title to override the default, or leave the fence bare and take the default heading.',

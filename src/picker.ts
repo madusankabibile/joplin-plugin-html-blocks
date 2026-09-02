@@ -68,7 +68,7 @@ const tileHtml = (
 };
 
 // Groups other than the one the dialog opens on start out hidden, so the first
-// paint is a single category rather than 298 previews - and so the dialog is
+// paint is a single category rather than 383 previews - and so the dialog is
 // already right if the script has not run yet.
 const groupHtml = (category: string, tiles: string, open: boolean, extraClass = ''): string =>
 	`<section class="group${open ? '' : ' hidden'}${extraClass ? ` ${extraClass}` : ''}"

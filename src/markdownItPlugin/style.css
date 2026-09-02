@@ -2280,6 +2280,37 @@ pre.jhtml-art-big {
 	padding-right: 2px;
 }
 
+/* The chrome of the "Admonition markdown extension" plugin, reproduced so that
+ * a note library written for it keeps its old look here. Faithful to that
+ * plugin's stylesheet - an accent rule down the left, a title band tinted 10%
+ * of the accent, square corners, no card fill - except that the tint is mixed
+ * against the Joplin background instead of being a fixed rgba(), so the block
+ * survives a dark theme. */
+.jhtml.jhtml-t-admonition {
+	border: none;
+	border-left: 4px solid var(--jh-color);
+	border-radius: 2px;
+	background: transparent;
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05), 0 0 1px rgba(0, 0, 0, 0.1);
+	padding: 0 12px;
+	overflow: hidden;
+}
+
+.jhtml.jhtml-t-admonition > .jhtml-head {
+	/* Pulled out to the padding edges so the tint spans the whole block. */
+	margin: 0 -12px;
+	padding: 8px 12px;
+	background: var(--jh-tint);
+	color: var(--jh-fg);
+	font-size: 1em;
+	font-weight: 700;
+}
+
+/* No padding of its own on the container, so the body carries its own. */
+.jhtml.jhtml-t-admonition > .jhtml-body {
+	padding: 10px 0;
+}
+
 /* Themes that fill the block leave the inner surfaces to the variables, but a
  * few inner boxes carry their own border and would otherwise disappear. */
 .jhtml-t-solid .jhtml-stat,
@@ -2421,6 +2452,18 @@ pre.jhtml-art-big {
 .jhtml-b-card_underline_green { --jh-color: #22c55e; }
 .jhtml-b-card_underline_teal { --jh-color: #14b8a6; }
 .jhtml-b-card_underline_slate { --jh-color: #64748b; }
+.jhtml-b-note { --jh-color: #448aff; }
+.jhtml-b-abstract { --jh-color: #00b0ff; }
+.jhtml-b-info { --jh-color: #00b8d4; }
+.jhtml-b-tip { --jh-color: #00bfa5; }
+.jhtml-b-success { --jh-color: #00c853; }
+.jhtml-b-question { --jh-color: #64dd17; }
+.jhtml-b-warning { --jh-color: #ff9100; }
+.jhtml-b-failure { --jh-color: #ff5252; }
+.jhtml-b-danger { --jh-color: #ff1744; }
+.jhtml-b-bug { --jh-color: #f50057; }
+.jhtml-b-example { --jh-color: #7c4dff; }
+.jhtml-b-quote { --jh-color: #9e9e9e; }
 .jhtml-b-callout_info { --jh-color: #3b82f6; }
 .jhtml-b-callout_tip { --jh-color: #10b981; }
 .jhtml-b-callout_note { --jh-color: #64748b; }
