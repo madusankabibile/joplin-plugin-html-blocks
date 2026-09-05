@@ -163,6 +163,23 @@ export default (_context: { contentScriptId: string }) => {
 				rawHtml(tokens[idx].meta, tokens[idx].content, inline);
 		},
 
-		assets: () => [{ name: './style.css' }],
+		assets: (theme?: any) => {
+			const result: any[] = [{ name: './style.css' }];
+			if (theme) {
+				const rules: string[] = [];
+				if (theme.color) rules.push(`--joplin-color: ${theme.color};`);
+				if (theme.backgroundColor) rules.push(`--joplin-background-color: ${theme.backgroundColor};`);
+				if (theme.dividerColor) rules.push(`--joplin-divider-color: ${theme.dividerColor};`);
+				if (theme.urlColor) rules.push(`--joplin-url-color: ${theme.urlColor};`);
+				if (rules.length > 0) {
+					result.push({
+						inline: true,
+						mime: 'text/css',
+						text: `:root, body {\n\t${rules.join('\n\t')}\n}`,
+					});
+				}
+			}
+			return result;
+		},
 	};
 };

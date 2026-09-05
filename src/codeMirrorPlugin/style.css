@@ -10,7 +10,7 @@
 .cm-jhtml-line {
 	--jh-color: #64748b;
 	--jh-bg: var(--joplin-background-color, #ffffff);
-	--jh-fg: var(--joplin-color, #24292e);
+	--jh-fg: var(--joplin-color, currentColor);
 	--jh-tint: transparent;
 	--jh-tint-2: transparent;
 	--jh-strong: var(--jh-color);
@@ -18,6 +18,13 @@
 
 	background: var(--jh-tint);
 	box-shadow: inset 3px 0 0 var(--jh-color);
+}
+
+@media (prefers-color-scheme: dark) {
+	.cm-jhtml-line {
+		--jh-bg: var(--joplin-background-color, #1d2024);
+		--jh-fg: var(--joplin-color, #dddddd);
+	}
 }
 
 /* The tints are deliberately translucent rather than mixed into the editor
