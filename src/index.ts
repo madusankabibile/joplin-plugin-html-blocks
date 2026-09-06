@@ -91,7 +91,6 @@ const registerBlockCommands = async () => {
 const buildMenu = (): MenuItem[] => {
 	const items: MenuItem[] = [
 		{ commandName: PICKER_COMMAND, label: 'Insert block...', accelerator: 'CmdOrCtrl+Alt+H' },
-		{ type: 'separator' },
 	];
 
 	for (const category of categories()) {
@@ -105,7 +104,6 @@ const buildMenu = (): MenuItem[] => {
 		});
 	}
 
-	items.push({ type: 'separator' });
 	items.push({ commandName: CHEAT_SHEET_COMMAND, label: 'Insert cheat sheet' });
 
 	return items;
